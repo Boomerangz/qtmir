@@ -33,15 +33,17 @@ option(WITH_MIR2 "Build with Mir 2" OFF)
 option(Werror "Treat warnings as errors" ON)
 
 include(FindPkgConfig)
-find_package(Qt5Core 5.9 REQUIRED)
-find_package(Qt5DBus 5.9 REQUIRED)
-find_package(Qt5Gui 5.9 REQUIRED)
-find_package(Qt5Qml 5.9 REQUIRED)
-find_package(Qt5Quick 5.9 REQUIRED)
-find_package(Qt5Sensors 5.9 REQUIRED)
-find_package(Qt5Test 5.9 REQUIRED)
-# TODO: when we support Qt 6, set QT_VERSION_MAJOR accordingly.
+
 set(QT_VERSION_MAJOR 5)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
+    Core DBus Gui Qml Quick Sensors Test
+    # For the QPA
+    EglSupport
+    EventDispatcherSupport
+    FontDatabaseSupport
+    ServiceSupport
+    ThemeSupport
+)
 
 find_package(Threads REQUIRED)
 
@@ -90,8 +92,6 @@ if(WITH_CONTENTHUB)
 pkg_check_modules(CONTENT_HUB liblomiri-content-hub>=1.0.0 REQUIRED)
 message(STATUS "Bulding with content-hub")
 endif()
-
-include_directories(SYSTEM ${Qt5Core_INCLUDE_DIRS})
 
 # Lomiri shell Application API headers (lomiri/shell/application/*.h, formerly
 # from liblomiri-shell-api-dev) now live in this tree; make them globally

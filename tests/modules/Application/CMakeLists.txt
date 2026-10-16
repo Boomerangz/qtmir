@@ -21,7 +21,7 @@ add_executable(application_test ${APPLICATION_TEST_SOURCES})
 target_link_libraries(
   application_test
 
-  Qt5::Test
+  Qt::Test
 
   qtmirapplicationplugin
 

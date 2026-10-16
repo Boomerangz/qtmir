@@ -26,7 +26,7 @@ target_link_libraries(
 
   qtmirapplicationplugin
 
-  Qt5::Test
+  Qt::Test
 
   qtmir-test-framework-static
 

@@ -16,7 +16,6 @@ include_directories(
 include_directories(
   SYSTEM
   ${MIROIL_INCLUDE_DIRS}
-  ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
   ${MIRSERVER_INCLUDE_DIRS}
   ${MIRRENDERERGLDEV_INCLUDE_DIRS}
   ${MIRTEST_INCLUDE_DIRS}
@@ -27,6 +26,7 @@ add_executable(ScreensModelTest ${SCREENCONTROLLER_TEST_SOURCES})
 target_link_libraries(
   ScreensModelTest
   qtmirserver
+  Qt::GuiPrivate
 
   qtmir-test-framework-static
 

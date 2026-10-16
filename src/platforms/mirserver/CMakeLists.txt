@@ -25,19 +25,6 @@ if (WITH_CONTENTHUB)
     add_definitions(-DWITH_CONTENTHUB)
 endif()
 
-find_package(Qt5FontDatabaseSupport REQUIRED)
-find_package(Qt5ThemeSupport REQUIRED)
-find_package(Qt5EventDispatcherSupport REQUIRED)
-find_package(Qt5EglSupport REQUIRED)
-find_package(Qt5ServiceSupport REQUIRED)
-set(QT5PLATFORMSUPPORT_LIBS
-    Qt5FontDatabaseSupport::Qt5FontDatabaseSupport
-    Qt5ThemeSupport::Qt5ThemeSupport
-    Qt5EventDispatcherSupport::Qt5EventDispatcherSupport
-    Qt5EglSupport::Qt5EglSupport
-    Qt5ServiceSupport::Qt5ServiceSupport
-)
-
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/common
 )
@@ -54,14 +41,6 @@ include_directories(
     ${URL_DISPATCHER_INCLUDE_DIRS}
     ${EGL_INCLUDE_DIRS}
     ${LTTNG_INCLUDE_DIRS}
-
-    ${Qt5Gui_INCLUDE_DIRS}
-    ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
-
-
-    ${Qt5Quick_INCLUDE_DIRS}
-    ${Qt5Quick_PRIVATE_INCLUDE_DIRS}
-    ${Qt5Qml_INCLUDE_DIRS}
 
     ${CONTENT_HUB_INCLUDE_DIRS}
 )
@@ -108,6 +87,7 @@ add_library(qtmirserver-nomirserver OBJECT
     qtmir.cpp
 )
 add_dependencies(qtmirserver-nomirserver MirServer_LTTNG)
+target_link_libraries(qtmirserver-nomirserver PRIVATE Qt::DBus Qt::GuiPrivate Qt::QuickPrivate Qt::Sensors)
 
 # These files will only compile with mirserver-dev
 add_library(qtmirserver-mirserver OBJECT
@@ -118,6 +98,7 @@ add_library(qtmirserver-mirserver OBJECT
     ${PROMPTSESSION_MIRSERVER_SRC}
 )
 add_dependencies(qtmirserver-mirserver MirServer_LTTNG)
+target_link_libraries(qtmirserver-mirserver PRIVATE Qt::DBus Qt::GuiPrivate Qt::QuickPrivate Qt::Sensors)
 
 # These files get entangled by automoc so they need to go together. And some depend on mirserver-dev
 set(QMIRSERVER_PLUGIN_SRC
@@ -174,8 +155,8 @@ target_link_libraries(qtmirserver
         ${MIRAL_LDFLAGS}
         ${MIROIL_LDFLAGS}
         ${MIRSERVER_LDFLAGS}
-        Qt5::Core
-        Qt5::Gui
+        Qt::Core
+        Qt::Gui
 
     PRIVATE
         Threads::Threads
@@ -190,10 +171,12 @@ target_link_libraries(qtmirserver
 
         ${CONTENT_HUB_LIBRARIES}
 
-        Qt5::DBus
-        Qt5::Quick
-        Qt5::Sensors
-        ${QT5PLATFORMSUPPORT_LIBS}
+        Qt::DBus
+        Qt::GuiPrivate
+        Qt::Quick
+        Qt::QuickPrivate
+        Qt::Sensors
+        Qt::EglSupportPrivate
 )
 
 set_target_properties(qtmirserver
@@ -273,7 +256,6 @@ set_target_properties(qpa-mirserver
 target_link_libraries(qpa-mirserver
 PRIVATE
     qtmirserver
-    ${QT5PLATFORMSUPPORT_LIBS}
 
     ${MIRCOMMON_LDFLAGS}
     ${MIRSERVER_LDFLAGS}
@@ -283,16 +265,21 @@ PRIVATE
     ${URL_DISPATCHER_LDFLAGS}
     ${EGL_LDFLAGS}
     ${LTTNG_LIBRARIES}
-    ${FONTCONFIG_LDFLAGS}
     ${XKBCOMMON_LIBRARIES}
 
     ${CONTENT_HUB_LIBRARIES}
 
-    Qt5::Core
-    Qt5::DBus
-    Qt5::Quick
-    Qt5::Sensors
-    Qt5::Qml
+    Qt::Core
+    Qt::DBus
+    Qt::GuiPrivate
+    Qt::Quick
+    Qt::QuickPrivate
+    Qt::Sensors
+    Qt::Qml
+    Qt::EventDispatcherSupportPrivate
+    Qt::FontDatabaseSupportPrivate
+    Qt::ServiceSupportPrivate
+    Qt::ThemeSupportPrivate
 )
 
 install(TARGETS qpa-mirserver LIBRARY DESTINATION "${QPA_PLUGIN_INSTALL_DIR}")

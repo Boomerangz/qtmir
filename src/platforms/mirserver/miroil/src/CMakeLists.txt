@@ -45,4 +45,5 @@ target_link_libraries(miroil
     ${MIRSERVER_LDFLAGS}
 
     ${EGL_LDFLAGS}
+    Qt::Core
 )

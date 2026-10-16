@@ -12,7 +12,6 @@ include_directories(
 
 include_directories(
   SYSTEM
-  ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
   ${MIRSERVER_INCLUDE_DIRS}
   ${MIRAL_INCLUDE_DIRS}
 )
@@ -22,6 +21,7 @@ add_executable(QtEventFeederTest ${EVENT_FEEDER_TEST_SOURCES})
 target_link_libraries(
   QtEventFeederTest
   qtmirserver
+  Qt::GuiPrivate
   ${GTEST_BOTH_LIBRARIES}
   ${GMOCK_LIBRARIES}
 )

@@ -18,9 +18,6 @@ include_directories(
     ${GSETTINGS_QT_INCLUDE_DIRS}
 
     ${LTTNG_INCLUDE_DIRS}
-    ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
-    ${Qt5Qml_PRIVATE_INCLUDE_DIRS}
-    ${Qt5Quick_PRIVATE_INCLUDE_DIRS}
 )
 
 # Generate tracepoints.c and .h from tracepoints.tp
@@ -84,10 +81,13 @@ target_link_libraries(
     ${LTTNG_LDFLAGS}
     ${GSETTINGS_QT_LDFLAGS}
 
-    Qt5::Core
-    Qt5::DBus
-    Qt5::Qml
-    Qt5::Quick
+    Qt::Core
+    Qt::DBus
+    Qt::GuiPrivate
+    Qt::Qml
+    Qt::QmlPrivate
+    Qt::Quick
+    Qt::QuickPrivate
 
     qtmirserver
 )

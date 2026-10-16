@@ -22,7 +22,7 @@ add_executable(applicationmanager_test ${APPLICATION_MANAGER_TEST_SOURCES})
 target_link_libraries(
   applicationmanager_test
 
-  Qt5::Test
+  Qt::Test
 
   qtmirapplicationplugin
 

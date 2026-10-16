@@ -20,7 +20,7 @@ target_link_libraries(
 
   qtmirapplicationplugin
 
-  Qt5::Test
+  Qt::Test
 
   ${GTEST_BOTH_LIBRARIES}
   ${GMOCK_LIBRARIES}

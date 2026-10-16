@@ -13,7 +13,6 @@ include_directories(
 include_directories(
   SYSTEM
   ${MIROIL_INCLUDE_DIRS}
-  ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
   ${MIRSERVER_INCLUDE_DIRS}
   ${MIRAL_INCLUDE_DIRS}
 )
@@ -23,11 +22,12 @@ add_executable(ScreenTest ${SCREEN_TEST_SOURCES})
 target_link_libraries(
   ScreenTest
   qtmirserver
+  Qt::GuiPrivate
 
   ${GTEST_BOTH_LIBRARIES}
   ${GMOCK_LIBRARIES}
 
-  Qt5::Sensors
+  Qt::Sensors
 )
 
 add_test(Screen, ScreenTest)

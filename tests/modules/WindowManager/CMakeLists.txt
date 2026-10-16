@@ -20,7 +20,6 @@ include_directories(
   ${MIRAL_INCLUDE_DIRS}
   ${MIRTEST_INCLUDE_DIRS}
   ${MIRSERVER_INCLUDE_DIRS}
-  ${Qt5Quick_PRIVATE_INCLUDE_DIRS}
 )
 
 add_executable(windowmanager_test ${MIR_WINDOW_MANAGER_TEST_SOURCES})
@@ -30,7 +29,8 @@ target_link_libraries(
 
   qtmirapplicationplugin
 
-  Qt5::Test
+  Qt::Test
+  Qt::QuickPrivate
 
   qtmir-test-framework-static
 

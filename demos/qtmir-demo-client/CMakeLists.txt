@@ -7,10 +7,10 @@ add_executable(${DEMO_CLIENT}
 
 target_link_libraries(
     ${DEMO_CLIENT}
-    Qt5::Core
-    Qt5::DBus
-    Qt5::Qml
-    Qt5::Quick
+    Qt::Core
+    Qt::DBus
+    Qt::Qml
+    Qt::Quick
 )
 
 file(GLOB QML_JS_FILES *.qml *.js *.png)

@@ -15,7 +15,7 @@ add_executable(general_test ${GENERAL_TEST_SOURCES})
 target_link_libraries(
   general_test
 
-  Qt5::Gui
+  Qt::Gui
 
   ${GTEST_BOTH_LIBRARIES}
   ${GMOCK_LIBRARIES}
