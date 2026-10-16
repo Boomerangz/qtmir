@@ -554,7 +554,7 @@ void QtEventFeeder::dispatchPointer(const MirPointerEvent *pev)
             // QWheelEvent::DefaultDeltasPerStep = 120 but not defined on vivid
             const QPoint angleDelta(120 * hDelta, 120 * vDelta);
 
-            auto wheel = new QWheelEvent(relative, absolute, QPoint(), angleDelta, 0, Qt::Vertical, buttons, modifiers);
+            auto wheel = new QWheelEvent(relative, absolute, QPoint(), angleDelta, buttons, modifiers, Qt::NoScrollPhase, false);
             wheel->setTimestamp(timestamp.count());
             QGuiApplication::postEvent(this, wheel);
         }
@@ -725,7 +725,7 @@ bool QtEventFeeder::event(QEvent *e)
     case QEvent::Wheel:
     {
         QWheelEvent* we = static_cast<QWheelEvent*>(e);
-        QWindowSystemInterface::handleWheelEvent(nullptr, we->timestamp(), we->pos(), we->globalPos(),
+        QWindowSystemInterface::handleWheelEvent(nullptr, we->timestamp(), we->position(), we->globalPosition(),
                 we->pixelDelta(), we->angleDelta(), we->modifiers(), Qt::ScrollUpdate);
         return true;
     } break;

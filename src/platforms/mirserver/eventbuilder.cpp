@@ -182,12 +182,12 @@ mir::EventUPtr EventBuilder::makeMirEvent(QWheelEvent *qtEvent)
 
 #if MIR_SERVER_VERSION >= MIR_VERSION_NUMBER(2, 17, 0)
     return make_pointer_event(deviceId, timestamp, modifiers, mir_pointer_action_motion,
-                      buttons, qtEvent->x(), qtEvent->y(),
+                      buttons, qtEvent->position().x(), qtEvent->position().y(),
                       mirScroll.x(), mirScroll.y(),
                       0, 0);
 #else
     return make_pointer_event(deviceId, timestamp, cookie, modifiers, mir_pointer_action_motion,
-                      buttons, qtEvent->x(), qtEvent->y(),
+                      buttons, qtEvent->position().x(), qtEvent->position().y(),
                       mirScroll.x(), mirScroll.y(),
                       0, 0);
 #endif
@@ -287,8 +287,8 @@ mir::EventUPtr EventBuilder::makeMirEvent(Qt::KeyboardModifiers qmods,
         add_touch(*ev, id, action, tooltype,
                   touchPoint.pos().x(), touchPoint.pos().y(),
                   touchPoint.pressure(),
-                  touchPoint.rect().width(),
-                  touchPoint.rect().height(),
+                  touchPoint.ellipseDiameters().width(),
+                  touchPoint.ellipseDiameters().height(),
                   0 /* size */);
     }
 

@@ -138,7 +138,7 @@ private:
     bool m_modelUnderChange{false};
     static ApplicationManager* the_application_manager;
 
-    QHash<pid_t, QString> m_authorizedPids;
+    QMultiHash<pid_t, QString> m_authorizedPids;
     QHash<pid_t, pid_t> m_promptPids;
 
     mutable QMutex m_mutex;

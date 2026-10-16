@@ -539,7 +539,7 @@ TEST_F(ApplicationManagerTests,appStartedUsingCorrectDesktopFileHintSwitch)
     const QString name("Test App");
     const pid_t procId = 5551;
     QByteArray cmdLine("/usr/bin/testApp --desktop_file_hint=");
-    cmdLine = cmdLine.append(appId);
+    cmdLine.append(appId.toUtf8());
 
     // Set up Mocks & signal watcher
     EXPECT_CALL(procInfo,command_line(procId))
@@ -1358,7 +1358,7 @@ TEST_F(ApplicationManagerTests,mirNotifiesOfStoppingAppLaunchedWithDesktopFileHi
     const QString appId("testAppId");
     const pid_t procId = 5551;
     QByteArray cmdLine("/usr/bin/testApp --desktop_file_hint=");
-    cmdLine = cmdLine.append(appId);
+    cmdLine.append(appId.toUtf8());
 
     ON_CALL(*taskController,appIdHasProcessId(appId, procId)).WillByDefault(Return(true));
 
