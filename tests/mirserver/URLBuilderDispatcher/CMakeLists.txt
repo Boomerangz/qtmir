@@ -11,7 +11,6 @@ include_directories(
 
 include_directories(
   SYSTEM
-  ${QT5PLATFORM_SUPPORT_INCLUDE_DIRS}
   ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
   ${MIRSERVER_INCLUDE_DIRS}
 )
@@ -22,7 +21,6 @@ target_link_libraries(
   URLBuilderDispatcherTest
   qtmirserver
 
-  ${QT5PLATFORMSUPPORT_LIBS}
   ${GTEST_BOTH_LIBRARIES}
   ${GMOCK_LIBRARIES}
 )

@@ -20,7 +20,6 @@ include_directories(
 
 add_executable(surfacemanager_test ${SURFACE_MANAGER_TEST_SOURCES})
 
-add_dependencies(surfacemanager_test qtmir-test-framework-static)
 
 target_link_libraries(
   surfacemanager_test
@@ -29,7 +28,6 @@ target_link_libraries(
 
   Qt5::Test
 
-  -L${CMAKE_BINARY_DIR}/tests/framework
   qtmir-test-framework-static
 
   ${MIRTEST_LDFLAGS}

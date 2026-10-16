@@ -4,16 +4,9 @@ add_definitions(-DQPA_MIRSERVER_NAME=\"${QPA_MIRSERVER_NAME}\")
 
 include_directories(
     SYSTEM
-
-    ${CMAKE_SOURCE_DIR}/include
-
     ${MIRSERVER_INCLUDE_DIRS}
     ${MIROIL_INCLUDE_DIRS}
     ${MIRAL_INCLUDE_DIRS}
-
-    ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
-    ${Qt5Qml_PRIVATE_INCLUDE_DIRS}
-    ${Qt5Quick_PRIVATE_INCLUDE_DIRS}
 )
 
 add_executable(${DEMO_SHELL}

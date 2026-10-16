@@ -8,7 +8,6 @@ set(
 )
 
 include_directories(
-  ${CMAKE_SOURCE_DIR}/include
   ${CMAKE_SOURCE_DIR}/src/common
   ${CMAKE_SOURCE_DIR}/src/modules
   ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
@@ -33,7 +32,6 @@ target_link_libraries(
 
   Qt5::Test
 
-  -L${CMAKE_BINARY_DIR}/miral-qt/tests/framework
   qtmir-test-framework-static
 
   ${MIRAL_LDFLAGS}

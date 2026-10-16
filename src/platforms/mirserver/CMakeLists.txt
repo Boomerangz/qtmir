@@ -1,7 +1,3 @@
-# Qt5PlatformSupport is not available as a cmake module.
-# And also not anymore as pkgconfig module since Qt 5.6.
-#pkg_check_modules(QT5PLATFORM_SUPPORT Qt5PlatformSupport REQUIRED)
-include(FindQt5PlatformSupport)
 include(UseLttngGenTp)
 
 set(INCLUDE_NAME "qtmir-qt${QT_VERSION_MAJOR}-mir${MIR_VERSION_MAJOR}")
@@ -14,13 +10,8 @@ set(QPA_MIRSERVER_NAME "${QPA_MIRSERVER_NAME}" PARENT_SCOPE)
 
 add_definitions(-DQPA_MIRSERVER_NAME=\"${QPA_MIRSERVER_NAME}\")
 
-if(WITH_MIR2)
-    # TODO: read MirOil and MirAL's SOVERSION, and take that into our SOVERSION.
-    set(QTMIRSERVER_ABI 1)
-else()
-    # We don't expect to ever bump ABI again.
-    set(QTMIRSERVER_ABI 1)
-endif()
+# TODO: consider the miroil/miral SOVERSION with Mir2
+set(QTMIRSERVER_ABI 1)
 
 set(qtmir_include ${CMAKE_SOURCE_DIR}/include)
 
@@ -29,14 +20,6 @@ if(NOT WITH_MIR2)
 endif()
 
 add_subdirectory(wayland-generated)
-
-# Hacks for the QPA privates monster.
-pkg_check_modules(FONTCONFIG fontconfig REQUIRED)
-
-if (QGL_DEBUG)
-    message(STATUS "Qt's OpenGL debug logging enabled.")
-    add_definitions(-DQGL_DEBUG)
-endif()
 
 if (WITH_CONTENTHUB)
     add_definitions(-DWITH_CONTENTHUB)
@@ -56,9 +39,7 @@ set(QT5PLATFORMSUPPORT_LIBS
 )
 
 include_directories(
-    ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/src/common
-    ${CMAKE_CURRENT_BINARY_DIR} # for tracepoints.h
 )
 
 include_directories(
@@ -67,7 +48,6 @@ include_directories(
     ${MIRCOMMON_INCLUDE_DIRS}
     ${MIRSERVER_INCLUDE_DIRS}
     ${MIRRENDERERGLDEV_INCLUDE_DIRS}
-    ${MIRSERVER_INCLUDE_DIRS}
     ${MIROIL_INCLUDE_DIRS}
     ${MIRWAYLAND_INCLUDE_DIRS}
 
@@ -83,18 +63,11 @@ include_directories(
     ${Qt5Quick_PRIVATE_INCLUDE_DIRS}
     ${Qt5Qml_INCLUDE_DIRS}
 
-if(WITH_CONTENTHUB)
     ${CONTENT_HUB_INCLUDE_DIRS}
-endif()
-
     ${VALGRIND_INCLUDE_DIRS}
 )
 
-# We have to remove -pedantic for tracepoints.c
-string (REPLACE " -pedantic " " " TRACEPOINTS_CMAKE_C_FLAGS ${CMAKE_C_FLAGS})
-# BYTE_ORDER needed to compile tracepoints in C99 mode.
-set(TRACEPOINTS_CMAKE_C_FLAGS "${TRACEPOINTS_CMAKE_C_FLAGS} -DBYTE_ORDER=__BYTE_ORDER -fPIC ")
-set_source_files_properties(tracepoints.c PROPERTIES COMPILE_FLAGS "${TRACEPOINTS_CMAKE_C_FLAGS}")
+set_source_files_properties(tracepoints.c PROPERTIES COMPILE_FLAGS "-fPIC")
 
 # Generate tracepoints.c and .h from tracepoints.tp
 add_lttng_gen_tp(NAME tracepoints)
@@ -136,8 +109,6 @@ add_library(qtmirserver-nomirserver OBJECT
     qtmir.cpp
 )
 add_dependencies(qtmirserver-nomirserver MirServer_LTTNG)
-
-include_directories(SYSTEM ${MIRSERVER_INCLUDE_DIRS})
 
 # These files will only compile with mirserver-dev
 add_library(qtmirserver-mirserver OBJECT
@@ -212,13 +183,10 @@ target_link_libraries(qtmirserver
         ${URL_DISPATCHER_LDFLAGS}
         ${EGL_LDFLAGS}
         ${LTTNG_LIBRARIES}
-        ${GIO_LDFLAGS}
-        ${FONTCONFIG_LDFLAGS}
         ${XKBCOMMON_LIBRARIES}
 
         ${MIRCOMMON_LDFLAGS}
         ${MIRWAYLAND_LDFLAGS}
-        ${WAYLAND_CLIENT_LIBRARIES}
         ${WAYLAND_SERVER_LDFLAGS}
 
         ${CONTENT_HUB_LIBRARIES}
@@ -311,13 +279,11 @@ PRIVATE
     ${MIRCOMMON_LDFLAGS}
     ${MIRSERVER_LDFLAGS}
     ${MIRWAYLAND_LDFLAGS}
-    ${WAYLAND_CLIENT_LIBRARIES}
     ${WAYLAND_SERVER_LDFLAGS}
 
     ${URL_DISPATCHER_LDFLAGS}
     ${EGL_LDFLAGS}
     ${LTTNG_LIBRARIES}
-    ${GIO_LDFLAGS}
     ${FONTCONFIG_LDFLAGS}
     ${XKBCOMMON_LIBRARIES}
 

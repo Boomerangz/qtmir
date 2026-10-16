@@ -1,7 +1,3 @@
-include_directories(
-    include
-)
-
 find_package(GMock)
 
 if(NOT WITH_MIR2)

@@ -37,7 +37,6 @@ target_include_directories(miroil
     ${MIRCOMMON_INCLUDE_DIRS}
     ${MIRSERVER_INCLUDE_DIRS}
     ${MIRRENDERERGLDEV_INCLUDE_DIRS}
-    ${MIRSERVER_INCLUDE_DIRS}
 )
 
 target_link_libraries(miroil

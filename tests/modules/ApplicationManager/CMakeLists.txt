@@ -18,7 +18,6 @@ include_directories(
 
 add_executable(applicationmanager_test ${APPLICATION_MANAGER_TEST_SOURCES})
 
-add_dependencies(applicationmanager_test qtmir-test-framework-static)
 
 target_link_libraries(
   applicationmanager_test
@@ -27,7 +26,6 @@ target_link_libraries(
 
   qtmirapplicationplugin
 
-  -L${CMAKE_BINARY_DIR}/tests/framework
   qtmir-test-framework-static
 
   ${GTEST_BOTH_LIBRARIES}

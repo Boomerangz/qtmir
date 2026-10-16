@@ -8,7 +8,6 @@ set(
 )
 
 include_directories(
-  ${CMAKE_SOURCE_DIR}/include
   ${CMAKE_SOURCE_DIR}/tests/framework
   ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
   ${CMAKE_SOURCE_DIR}/src/common
@@ -29,7 +28,6 @@ target_link_libraries(
   ScreensModelTest
   qtmirserver
 
-  -L${CMAKE_BINARY_DIR}/tests/framework
   qtmir-test-framework-static
 
   ${GTEST_BOTH_LIBRARIES}

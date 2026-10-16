@@ -1,8 +1,3 @@
-cmake_minimum_required(VERSION 3.10)
-if(POLICY CMP0011)
- cmake_policy(SET CMP0011 NEW)
-endif(POLICY CMP0011)
-
 find_program(LTTNG_GEN_TP NAMES lttng-gen-tp DOC "lttng-gen-tp executable")
 if(NOT LTTNG_GEN_TP)
  message(FATAL_ERROR "Excutable lttng-gen-top not found")

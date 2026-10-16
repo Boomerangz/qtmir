@@ -19,7 +19,6 @@ include_directories(
 
 add_executable(session_test ${SESSION_TEST_SOURCES})
 
-add_dependencies(session_test qtmir-test-framework-static)
 
 target_link_libraries(
   session_test
@@ -28,7 +27,6 @@ target_link_libraries(
 
   Qt5::Test
 
-  -L${CMAKE_BINARY_DIR}/tests/framework
   qtmir-test-framework-static
 
   ${GTEST_BOTH_LIBRARIES}
