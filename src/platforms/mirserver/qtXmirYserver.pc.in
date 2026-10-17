@@ -3,7 +3,7 @@ includedir=@INCLUDEDIR@
 
 Name: @QTMIRSERVER_SONAME@
 Description: QtMir server library
-Version: @QTMIR_VERSION@
+Version: @PROJECT_VERSION@
 Requires: @QTMIRSERVER_PCREQUIRES@
 Conflicts: @QTMIRSERVER_PCCONFLICTS@
 Libs: -L${libdir} -l@QTMIRSERVER_SONAME@

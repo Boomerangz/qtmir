@@ -1,12 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(qtmir)
-
-set(QTMIR_VERSION_MAJOR 0)
-set(QTMIR_VERSION_MINOR 7)
-set(QTMIR_VERSION_PATCH 2)
-
-set(QTMIR_VERSION ${QTMIR_VERSION_MAJOR}.${QTMIR_VERSION_MINOR}.${QTMIR_VERSION_PATCH})
+project(qtmir VERSION 0.7.2 LANGUAGES C CXX)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
