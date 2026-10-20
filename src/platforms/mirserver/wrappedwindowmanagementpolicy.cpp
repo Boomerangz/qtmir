@@ -19,6 +19,7 @@
 #include <miroil/eventdispatch.h>
 
 #include "initialsurfacesizes.h"
+#include "inputmethodauthorizer.h"
 #include "screensmodel.h"
 #include "surfaceobserver.h"
 
@@ -31,7 +32,6 @@
 #include "tracepoints.h"
 
 #include <QDebug>
-#include <QFileInfo>
 #include <QTimer>
 #include <QUuid>
 
@@ -116,12 +116,9 @@ namespace qtmir
         auto surfaceName = requestParameters.name().is_set() ? requestParameters.name().value() : "";
 
         if (surfaceType == mir_window_type_inputmethod || surfaceName == "maliit-server" || surfaceName == "maliit6-server") {
-            QFileInfo info(QStringLiteral("/proc/%1/exe").arg(appPid));
-
-            // TODO: this is a brute-force fix to make sure only maliit-server can be an input method
-            auto maliitBinaryPath = info.symLinkTarget();
-            if (maliitBinaryPath != "/usr/bin/maliit-server" && maliitBinaryPath != "/usr/bin/maliit6-server") {
-                qWarning() << "removing mir_window_type_inputmethod method type for" << info.symLinkTarget()
+            // make sure only maliit-server can be an input method
+            if (!isTrustedInputMethod(appPid)) {
+                qWarning() << "removing mir_window_type_inputmethod method type for pid" << appPid
                         << "as it is not maliit(6)-server";
                 surfaceType = mir_window_type_normal;
                 parameters.type() = mir_window_type_normal;
