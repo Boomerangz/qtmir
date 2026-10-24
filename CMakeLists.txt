@@ -57,9 +57,6 @@ else()
     pkg_check_modules(MIRWAYLAND REQUIRED IMPORTED_TARGET mir1wayland>=1.2)
     pkg_check_modules(MIRTEST REQUIRED IMPORTED_TARGET mir1test>=0.26)
 
-    # Bundled miroil for Mir1
-    set(MIROIL_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/src/platforms/mirserver/miroil/include)
-
     set(MIR_VERSION_MAJOR 1)
 endif()
 

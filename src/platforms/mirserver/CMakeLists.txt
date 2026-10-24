@@ -13,8 +13,6 @@ add_definitions(-DQPA_MIRSERVER_NAME=\"${QPA_MIRSERVER_NAME}\")
 # TODO: consider the miroil/miral SOVERSION with Mir2
 set(QTMIRSERVER_ABI 1)
 
-set(qtmir_include ${CMAKE_SOURCE_DIR}/include)
-
 if(NOT WITH_MIR2)
     add_subdirectory(miroil)
 endif()
@@ -205,10 +203,10 @@ install(
 if(NOT WITH_MIR2)
     install(
       FILES
-        ${MIROIL_INCLUDE_DIRS}/miroil/display_configuration_policy.h
-        ${MIROIL_INCLUDE_DIRS}/miroil/display_configuration_storage.h
-        ${MIROIL_INCLUDE_DIRS}/miroil/display_id.h
-        ${MIROIL_INCLUDE_DIRS}/miroil/edid.h
+        miroil/include/miroil/display_configuration_policy.h
+        miroil/include/miroil/display_configuration_storage.h
+        miroil/include/miroil/display_id.h
+        miroil/include/miroil/edid.h
       DESTINATION ${INCLUDEDIR}/miroil
     )
 endif()
