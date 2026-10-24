@@ -23,11 +23,8 @@ if (WITH_CONTENTHUB)
     add_definitions(-DWITH_CONTENTHUB)
 endif()
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}/src/common
-)
-
 set(QTMIRSERVER_PUBLIC_DEPS
+    qtmir-common
     PkgConfig::MIRAL
     PkgConfig::MIRSERVER
 )
@@ -72,7 +69,6 @@ endif()
 
 # These files will compile without mirserver-dev
 add_library(qtmirserver-nomirserver OBJECT
-    ${CMAKE_SOURCE_DIR}/src/common/timestamp.cpp
     ${CLIPBOARD_SRC}
     logging.cpp
     shelluuid.cpp
@@ -110,7 +106,6 @@ target_link_libraries(qtmirserver-mirserver PRIVATE ${QTMIRSERVER_PUBLIC_DEPS} $
 
 # These files get entangled by automoc so they need to go together. And some depend on mirserver-dev
 set(QMIRSERVER_PLUGIN_SRC
-    ${CMAKE_SOURCE_DIR}/src/common/debughelpers.cpp
     cursor.cpp
     eventbuilder.cpp
     qtwindowmanager.cpp
@@ -139,11 +134,6 @@ set(QMIRSERVER_PLUGIN_SRC
     ${CMAKE_SOURCE_DIR}/include/qtmir/screens.h
     ${CMAKE_SOURCE_DIR}/include/qtmir/types.h
     ${CMAKE_SOURCE_DIR}/include/qtmir/qtmir.h
-
-    ${CMAKE_SOURCE_DIR}/src/common/windowcontrollerinterface.h
-    ${CMAKE_SOURCE_DIR}/src/common/workspacecontrollerinterface.h
-    ${CMAKE_SOURCE_DIR}/src/common/windowmodelnotifier.h
-    ${CMAKE_SOURCE_DIR}/src/common/appnotifier.h
 )
 
 add_library(qtmirserver SHARED

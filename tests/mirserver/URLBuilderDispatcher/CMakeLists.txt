@@ -6,7 +6,6 @@ set(
 include_directories(
   ${CMAKE_SOURCE_DIR}/tests/framework
   ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
-  ${CMAKE_SOURCE_DIR}/src/common
 )
 
 add_executable(URLBuilderDispatcherTest ${URLBUILDERDISPATCHER_TEST_RESOURCES})

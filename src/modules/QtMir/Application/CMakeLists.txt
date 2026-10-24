@@ -4,7 +4,6 @@ add_definitions(-DQPA_MIRSERVER_NAME=\"${QPA_MIRSERVER_NAME}\")
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
-    ${CMAKE_SOURCE_DIR}/src/common
 )
 
 # Generate tracepoints.c and .h from tracepoints.tp
@@ -16,8 +15,6 @@ add_custom_target(QtMirApplication_LTTNG
 set(QMLMIRPLUGIN_SRC
     application_manager.cpp
     application.cpp
-    ../../../common/abstractdbusservicemonitor.cpp
-    ../../../common/debughelpers.cpp
     dbusfocusinfo.cpp
     plugin.cpp
     mirsurface.cpp

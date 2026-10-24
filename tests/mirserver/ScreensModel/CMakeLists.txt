@@ -1,7 +1,6 @@
 set(
   SCREENCONTROLLER_TEST_SOURCES
   screensmodel_test.cpp
-  ${CMAKE_SOURCE_DIR}/src/common/debughelpers.cpp
   # to be moc-ed
   stub_screen.h
   testable_screensmodel.h
@@ -10,7 +9,6 @@ set(
 include_directories(
   ${CMAKE_SOURCE_DIR}/tests/framework
   ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
-  ${CMAKE_SOURCE_DIR}/src/common
 )
 
 add_executable(ScreensModelTest ${SCREENCONTROLLER_TEST_SOURCES})

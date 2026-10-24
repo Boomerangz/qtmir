@@ -2,7 +2,6 @@ set(
   SESSION_TEST_SOURCES
   taskcontroller_test.cpp
   session_test.cpp
-  ${CMAKE_SOURCE_DIR}/src/common/debughelpers.cpp
 )
 
 include_directories(

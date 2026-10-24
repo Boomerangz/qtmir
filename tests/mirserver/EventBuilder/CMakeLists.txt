@@ -5,7 +5,6 @@ set(
 
 include_directories(
   ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
-  ${CMAKE_SOURCE_DIR}/src/common
 )
 
 add_executable(EventBuilderTest ${EVENT_BUILDER_TEST_SOURCES})

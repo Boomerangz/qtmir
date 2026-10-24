@@ -2,12 +2,10 @@ set(
   EVENT_FEEDER_TEST_SOURCES
   qteventfeeder_test.cpp
   mock_qtwindowsystem.h
-  ${CMAKE_SOURCE_DIR}/src/common/debughelpers.cpp
 )
 
 include_directories(
   ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
-  ${CMAKE_SOURCE_DIR}/src/common
 )
 
 add_executable(QtEventFeederTest ${EVENT_FEEDER_TEST_SOURCES})

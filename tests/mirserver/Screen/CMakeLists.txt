@@ -1,13 +1,11 @@
 set(
   SCREEN_TEST_SOURCES
   screen_test.cpp
-  ${CMAKE_SOURCE_DIR}/src/common/debughelpers.cpp
 )
 
 include_directories(
   ${CMAKE_SOURCE_DIR}/tests/framework
   ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
-  ${CMAKE_SOURCE_DIR}/src/common
 )
 
 add_executable(ScreenTest ${SCREEN_TEST_SOURCES})

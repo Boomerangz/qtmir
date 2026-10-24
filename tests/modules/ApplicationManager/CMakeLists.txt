@@ -1,7 +1,6 @@
 set(
   APPLICATION_MANAGER_TEST_SOURCES
   application_manager_test.cpp
-  ${CMAKE_SOURCE_DIR}/src/common/debughelpers.cpp
 )
 
 include_directories(
