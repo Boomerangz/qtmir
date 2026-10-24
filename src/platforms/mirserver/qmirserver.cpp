@@ -18,10 +18,6 @@
 #include <QObject>
 #include <QDebug>
 
-#ifdef WITH_VALGRIND
-#include <valgrind.h>
-#endif
-
 // local
 #include "qmirserver.h"
 #include "qmirserver_p.h"
@@ -78,12 +74,7 @@ void QMirServer::stop()
     if (d->serverThread->isRunning()) {
         d->stop();
 
-#ifdef WITH_VALGRIND
-        const int timeout = RUNNING_ON_VALGRIND ? 100 : 10; // else timeout triggers before Mir done
-#else
-        const int timeout = 10;
-#endif
-        if (!d->serverThread->wait(timeout * 1000)) {
+        if (!d->serverThread->wait(60 * 1000)) {
             // do something to indicate fail during shutdown
             qCritical() << "ERROR: QMirServer - Mir failed to shut down correctly, terminating it";
             d->serverThread->terminate();

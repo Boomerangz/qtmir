@@ -29,7 +29,6 @@ set (CMAKE_CXX_EXTENSIONS OFF)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CMAKE_CXX_STANDARD}")
 
 option(WITH_CONTENTHUB "Build with content-hub" OFF)
-option(WITH_VALGRIND "Build with Valgrind detection" ON)
 option(WITH_MIR2 "Build with Mir 2" OFF)
 option(Werror "Treat warnings as errors" ON)
 
@@ -86,11 +85,6 @@ pkg_check_modules(URL_DISPATCHER lomiri-url-dispatcher REQUIRED)
 pkg_check_modules(EGL egl)
 pkg_check_modules(LTTNG lttng-ust)
 pkg_check_modules(GSETTINGS_QT REQUIRED gsettings-qt)
-
-if(WITH_VALGRIND)
-    pkg_check_modules(VALGRIND valgrind REQUIRED)
-    add_definitions(-DWITH_VALGRIND)
-endif()
 
 if(WITH_CONTENTHUB)
 pkg_check_modules(CONTENT_HUB liblomiri-content-hub>=1.0.0 REQUIRED)

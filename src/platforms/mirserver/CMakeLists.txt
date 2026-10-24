@@ -64,7 +64,6 @@ include_directories(
     ${Qt5Qml_INCLUDE_DIRS}
 
     ${CONTENT_HUB_INCLUDE_DIRS}
-    ${VALGRIND_INCLUDE_DIRS}
 )
 
 set_source_files_properties(tracepoints.c PROPERTIES COMPILE_FLAGS "-fPIC")
