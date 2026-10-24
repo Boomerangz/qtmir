@@ -34,14 +34,6 @@ set(QMLMIRPLUGIN_SRC
     tracepoints.c
     settings.cpp
     windowmodel.cpp
-# We need to run moc on these headers
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/ApplicationInfoInterface.h
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/ApplicationManagerInterface.h
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/Mir.h
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/MirSurfaceInterface.h
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/MirSurfaceItemInterface.h
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/MirSurfaceListInterface.h
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/SurfaceManagerInterface.h
 # Feed the automoc monster
     session_interface.h
     applicationinfo.h

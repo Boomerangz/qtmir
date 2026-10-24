@@ -122,9 +122,6 @@ set(QMIRSERVER_PLUGIN_SRC
     windowmodelnotifier.cpp
 
 # We need to run moc on these headers
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/MirMousePointerInterface.h
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/Mir.h
-
     ${CMAKE_SOURCE_DIR}/include/qtmir/mirserverapplication.h
     ${CMAKE_SOURCE_DIR}/include/qtmir/displayconfigurationpolicy.h
     ${CMAKE_SOURCE_DIR}/include/qtmir/sessionauthorizer.h
@@ -145,6 +142,7 @@ add_library(qtmirserver SHARED
 
 target_link_libraries(qtmirserver
     PUBLIC
+        lomiri-shell-application
         ${QTMIRSERVER_PUBLIC_DEPS}
         Qt::Core
         Qt::Gui
@@ -204,22 +202,6 @@ endif()
 install(
   FILES ${CMAKE_CURRENT_BINARY_DIR}/${QTMIRSERVER_SONAME}.pc
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
-)
-
-# Lomiri shell Application API: header-only interfaces that qtmir implements.
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/lomiri-shell-application.pc.in
-    ${CMAKE_CURRENT_BINARY_DIR}/lomiri-shell-application.pc
-    @ONLY
-)
-
-install(
-  DIRECTORY ${CMAKE_SOURCE_DIR}/include/lomiri
-  DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/lomiri-shell-api
-)
-
-install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/lomiri-shell-application.pc
-  DESTINATION ${CMAKE_INSTALL_DATADIR}/pkgconfig
 )
 
 configure_file(mirserver.json.in mirserver.json)

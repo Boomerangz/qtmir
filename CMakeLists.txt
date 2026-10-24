@@ -110,6 +110,7 @@ else()
     add_subdirectory(tests)
 endif()
 
+add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(demos)
 add_subdirectory(data)
