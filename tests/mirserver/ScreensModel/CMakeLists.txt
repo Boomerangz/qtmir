@@ -13,14 +13,6 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/src/common
 )
 
-include_directories(
-  SYSTEM
-  ${MIROIL_INCLUDE_DIRS}
-  ${MIRSERVER_INCLUDE_DIRS}
-  ${MIRRENDERERGLDEV_INCLUDE_DIRS}
-  ${MIRTEST_INCLUDE_DIRS}
-)
-
 add_executable(ScreensModelTest ${SCREENCONTROLLER_TEST_SOURCES})
 
 target_link_libraries(
@@ -29,7 +21,8 @@ target_link_libraries(
   Qt::GuiPrivate
 
   qtmir-test-framework-static
-
+  PkgConfig::MIRRENDERERGLDEV
+  PkgConfig::MIRTEST
   ${GTEST_BOTH_LIBRARIES}
   ${GMOCK_LIBRARIES}
 )

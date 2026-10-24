@@ -9,11 +9,6 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/src/common
 )
 
-include_directories(
-  SYSTEM
-  ${MIRSERVER_INCLUDE_DIRS}
-)
-
 add_executable(URLBuilderDispatcherTest ${URLBUILDERDISPATCHER_TEST_RESOURCES})
 
 target_link_libraries(

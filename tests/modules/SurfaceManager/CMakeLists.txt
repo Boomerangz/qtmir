@@ -11,13 +11,6 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/tests/framework
 )
 
-include_directories(
-  SYSTEM
-  ${MIROIL_INCLUDE_DIRS}
-  ${MIRAL_INCLUDE_DIRS}
-  ${MIRTEST_INCLUDE_DIRS}
-)
-
 add_executable(surfacemanager_test ${SURFACE_MANAGER_TEST_SOURCES})
 
 
@@ -30,7 +23,7 @@ target_link_libraries(
 
   qtmir-test-framework-static
 
-  ${MIRTEST_LDFLAGS}
+  PkgConfig::MIRTEST
   ${GTEST_BOTH_LIBRARIES}
   ${GMOCK_LIBRARIES}
 )

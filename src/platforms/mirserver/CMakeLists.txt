@@ -29,21 +29,31 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src/common
 )
 
-include_directories(
-    SYSTEM
-    ${MIRAL_INCLUDE_DIRS}
-    ${MIRCOMMON_INCLUDE_DIRS}
-    ${MIRSERVER_INCLUDE_DIRS}
-    ${MIRRENDERERGLDEV_INCLUDE_DIRS}
-    ${MIROIL_INCLUDE_DIRS}
-    ${MIRWAYLAND_INCLUDE_DIRS}
-
-    ${URL_DISPATCHER_INCLUDE_DIRS}
-    ${EGL_INCLUDE_DIRS}
-    ${LTTNG_INCLUDE_DIRS}
-
-    ${CONTENT_HUB_INCLUDE_DIRS}
+set(QTMIRSERVER_PUBLIC_DEPS
+    PkgConfig::MIRAL
+    PkgConfig::MIRSERVER
 )
+
+set(QTMIRSERVER_PRIVATE_DEPS
+    PkgConfig::EGL
+    PkgConfig::LTTNG
+    PkgConfig::MIRCOMMON
+    PkgConfig::MIRWAYLAND
+    PkgConfig::URL_DISPATCHER
+    PkgConfig::WAYLAND_SERVER
+    PkgConfig::XKBCOMMON
+)
+
+if(WITH_MIR2)
+    list(APPEND QTMIRSERVER_PUBLIC_DEPS PkgConfig::MIROIL)
+else()
+    list(APPEND QTMIRSERVER_PUBLIC_DEPS miroil)
+    list(APPEND QTMIRSERVER_PRIVATE_DEPS PkgConfig::MIRRENDERERGLDEV)
+endif()
+
+if(WITH_CONTENTHUB)
+    list(APPEND QTMIRSERVER_PRIVATE_DEPS PkgConfig::CONTENT_HUB)
+endif()
 
 set_source_files_properties(tracepoints.c PROPERTIES COMPILE_FLAGS "-fPIC")
 
@@ -87,7 +97,7 @@ add_library(qtmirserver-nomirserver OBJECT
     qtmir.cpp
 )
 add_dependencies(qtmirserver-nomirserver MirServer_LTTNG)
-target_link_libraries(qtmirserver-nomirserver PRIVATE Qt::DBus Qt::GuiPrivate Qt::QuickPrivate Qt::Sensors)
+target_link_libraries(qtmirserver-nomirserver PRIVATE ${QTMIRSERVER_PUBLIC_DEPS} ${QTMIRSERVER_PRIVATE_DEPS} Qt::DBus Qt::GuiPrivate Qt::QuickPrivate Qt::Sensors)
 
 # These files will only compile with mirserver-dev
 add_library(qtmirserver-mirserver OBJECT
@@ -98,7 +108,7 @@ add_library(qtmirserver-mirserver OBJECT
     ${PROMPTSESSION_MIRSERVER_SRC}
 )
 add_dependencies(qtmirserver-mirserver MirServer_LTTNG)
-target_link_libraries(qtmirserver-mirserver PRIVATE Qt::DBus Qt::GuiPrivate Qt::QuickPrivate Qt::Sensors)
+target_link_libraries(qtmirserver-mirserver PRIVATE ${QTMIRSERVER_PUBLIC_DEPS} ${QTMIRSERVER_PRIVATE_DEPS} Qt::DBus Qt::GuiPrivate Qt::QuickPrivate Qt::Sensors)
 
 # These files get entangled by automoc so they need to go together. And some depend on mirserver-dev
 set(QMIRSERVER_PLUGIN_SRC
@@ -138,39 +148,21 @@ set(QMIRSERVER_PLUGIN_SRC
     ${CMAKE_SOURCE_DIR}/src/common/appnotifier.h
 )
 
-if(NOT WITH_MIR2)
-    set(MIROIL_OBJ $<TARGET_OBJECTS:miroil>)
-endif()
-
 add_library(qtmirserver SHARED
     ${QMIRSERVER_PLUGIN_SRC}
     $<TARGET_OBJECTS:qtmirserver-nomirserver>
     $<TARGET_OBJECTS:qtmirserver-mirserver>
-    ${MIROIL_OBJ}
     $<TARGET_OBJECTS:wayland-protocols>
 )
 
 target_link_libraries(qtmirserver
     PUBLIC
-        ${MIRAL_LDFLAGS}
-        ${MIROIL_LDFLAGS}
-        ${MIRSERVER_LDFLAGS}
+        ${QTMIRSERVER_PUBLIC_DEPS}
         Qt::Core
         Qt::Gui
 
     PRIVATE
-        Threads::Threads
-        ${URL_DISPATCHER_LDFLAGS}
-        ${EGL_LDFLAGS}
-        ${LTTNG_LIBRARIES}
-        ${XKBCOMMON_LIBRARIES}
-
-        ${MIRCOMMON_LDFLAGS}
-        ${MIRWAYLAND_LDFLAGS}
-        ${WAYLAND_SERVER_LDFLAGS}
-
-        ${CONTENT_HUB_LIBRARIES}
-
+        ${QTMIRSERVER_PRIVATE_DEPS}
         Qt::DBus
         Qt::GuiPrivate
         Qt::Quick
@@ -253,22 +245,9 @@ set_target_properties(qpa-mirserver
   PROPERTIES
   OUTPUT_NAME ${QPA_MIRSERVER_SONAME})
 
-target_link_libraries(qpa-mirserver
-PRIVATE
+target_link_libraries(qpa-mirserver PRIVATE
     qtmirserver
-
-    ${MIRCOMMON_LDFLAGS}
-    ${MIRSERVER_LDFLAGS}
-    ${MIRWAYLAND_LDFLAGS}
-    ${WAYLAND_SERVER_LDFLAGS}
-
-    ${URL_DISPATCHER_LDFLAGS}
-    ${EGL_LDFLAGS}
-    ${LTTNG_LIBRARIES}
-    ${XKBCOMMON_LIBRARIES}
-
-    ${CONTENT_HUB_LIBRARIES}
-
+    ${QTMIRSERVER_PRIVATE_DEPS}
     Qt::Core
     Qt::DBus
     Qt::GuiPrivate

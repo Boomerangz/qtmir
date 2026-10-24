@@ -4,14 +4,6 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src/modules
 )
 
-include_directories(
-    SYSTEM
-    ${MIRAL_INCLUDE_DIRS}
-    ${MIRSERVER_INCLUDE_DIRS}
-    ${MIRRENDERERGLDEV_INCLUDE_DIRS}
-    ${MIRTEST_INCLUDE_DIRS}
-)
-
 set(QTMIR_TEST_PRIVATE_SRC
     fake_application_info.cpp
     fake_mirsurface.cpp
@@ -43,7 +35,8 @@ target_link_libraries(
     qtmir-test-framework-static
 
     qtmirapplicationplugin
-
+    PkgConfig::MIRRENDERERGLDEV
+    PkgConfig::MIRTEST
     ${GTEST_BOTH_LIBRARIES}
     ${GMOCK_LIBRARIES}
 )

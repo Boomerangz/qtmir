@@ -25,8 +25,7 @@ endfunction()
 add_wayland_protocol("qt_" "qt-windowmanager")
 
 include_directories(wayland-protocols
-                    ${MIRCORE_INCLUDE_DIRS}
-                    ${MIRWAYLAND_INCLUDE_DIRS}
                     ${CMAKE_CURRENT_BINARY_DIR}/../
 )
 add_library(wayland-protocols STATIC ${GENERATED_FILES})
+target_link_libraries(wayland-protocols PRIVATE PkgConfig::MIRCORE PkgConfig::MIRWAYLAND)

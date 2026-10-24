@@ -7,19 +7,6 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src/common
 )
 
-include_directories(
-    SYSTEM
-    ${MIROIL_INCLUDE_DIRS}
-    ${GLIB_INCLUDE_DIRS}
-    ${MIRAL_INCLUDE_DIRS}
-    ${MIRSERVER_INCLUDE_DIRS}
-    ${MIRRENDERERGLDEV_INCLUDE_DIRS}
-    ${LOMIRI_APP_LAUNCH_INCLUDE_DIRS}
-    ${GSETTINGS_QT_INCLUDE_DIRS}
-
-    ${LTTNG_INCLUDE_DIRS}
-)
-
 # Generate tracepoints.c and .h from tracepoints.tp
 add_lttng_gen_tp(NAME tracepoints)
 add_custom_target(QtMirApplication_LTTNG
@@ -72,15 +59,11 @@ add_dependencies(qtmirapplicationplugin QtMirApplication_LTTNG)
 
 target_link_libraries(
     qtmirapplicationplugin
-
-    ${CMAKE_THREAD_LIBS_INIT}
-
-    ${GLIB_LDFLAGS}
-    ${MIRSERVER_LDFLAGS}
-    ${LOMIRI_APP_LAUNCH_LDFLAGS}
-    ${LTTNG_LDFLAGS}
-    ${GSETTINGS_QT_LDFLAGS}
-
+    PkgConfig::GLIB
+    PkgConfig::GSETTINGS_QT
+    PkgConfig::LOMIRI_APP_LAUNCH
+    PkgConfig::LTTNG
+    PkgConfig::MIRSERVER
     Qt::Core
     Qt::DBus
     Qt::GuiPrivate
@@ -91,6 +74,10 @@ target_link_libraries(
 
     qtmirserver
 )
+
+if(NOT WITH_MIR2)
+    target_link_libraries(qtmirapplicationplugin PkgConfig::MIRRENDERERGLDEV)
+endif()
 
 
 # install

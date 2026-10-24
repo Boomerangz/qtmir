@@ -3,11 +3,6 @@ set(
   edid_test.cpp
 )
 
-include_directories(
-    SYSTEM
-    ${MIROIL_INCLUDE_DIRS}
-)
-
 add_executable(MirALTests ${MIRAL_TEST_SOURCES})
 
 target_link_libraries(MirALTests

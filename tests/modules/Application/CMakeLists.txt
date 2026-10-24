@@ -9,12 +9,6 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/tests/framework
 )
 
-include_directories(
-  SYSTEM
-  ${MIRAL_INCLUDE_DIRS}
-  ${MIRSERVER_INCLUDE_DIRS}
-)
-
 add_executable(application_test ${APPLICATION_TEST_SOURCES})
 
 

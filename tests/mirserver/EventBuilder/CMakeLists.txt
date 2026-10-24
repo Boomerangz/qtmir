@@ -8,13 +8,6 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/src/common
 )
 
-include_directories(
-  SYSTEM
-  ${MIROIL_INCLUDE_DIRS}
-  ${MIRSERVER_INCLUDE_DIRS}
-  ${MIRAL_INCLUDE_DIRS}
-)
-
 add_executable(EventBuilderTest ${EVENT_BUILDER_TEST_SOURCES})
 
 target_link_libraries(

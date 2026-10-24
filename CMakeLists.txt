@@ -39,32 +39,23 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
     ThemeSupport
 )
 
-find_package(Threads REQUIRED)
-
 if(WITH_MIR2)
-    pkg_check_modules(MIRSERVER mirserver>=2.25 REQUIRED)
-    pkg_check_modules(MIRAL miral>=5.6 REQUIRED)
-    pkg_search_module(MIRCOMMON mircommon REQUIRED)
-    pkg_search_module(MIRCORE mircore REQUIRED)
-
-    # Mir 2-specific
-    pkg_check_modules(MIROIL miroil>=8.0 REQUIRED)
-
-    # Wayland extension qt-windowmanager support
-    pkg_search_module(MIRWAYLAND mirwayland>=1.2 REQUIRED)
+    pkg_check_modules(MIRSERVER REQUIRED IMPORTED_TARGET mirserver>=2.25)
+    pkg_check_modules(MIRAL REQUIRED IMPORTED_TARGET miral>=5.6)
+    pkg_check_modules(MIRCOMMON REQUIRED IMPORTED_TARGET mircommon)
+    pkg_check_modules(MIRCORE REQUIRED IMPORTED_TARGET mircore)
+    pkg_check_modules(MIROIL REQUIRED IMPORTED_TARGET miroil>=8.0)
+    pkg_check_modules(MIRWAYLAND REQUIRED IMPORTED_TARGET mirwayland>=1.2)
 
     set(MIR_VERSION_MAJOR 2)
 else()
-    pkg_search_module(MIRSERVER REQUIRED mir1server>=0.26 mirserver>=0.26)
-    pkg_search_module(MIRRENDERERGLDEV REQUIRED mir1-renderer-gl-dev>=0.26 mir-renderer-gl-dev>=0.26)
-    pkg_search_module(MIRAL REQUIRED mir1al>=1.1.0 miral>=1.1.0)
-    pkg_search_module(MIRCOMMON mir1common REQUIRED)
-    pkg_search_module(MIRCORE mir1core REQUIRED)
-
-    # Wayland extension qt-windowmanager support
-    pkg_search_module(MIRWAYLAND mir1wayland>=1.2 REQUIRED)
-
-    pkg_check_modules(MIRTEST mir1test>=0.26 REQUIRED)
+    pkg_search_module(MIRSERVER REQUIRED IMPORTED_TARGET mir1server>=0.26 mirserver>=0.26)
+    pkg_search_module(MIRRENDERERGLDEV REQUIRED IMPORTED_TARGET mir1-renderer-gl-dev>=0.26 mir-renderer-gl-dev>=0.26)
+    pkg_search_module(MIRAL REQUIRED IMPORTED_TARGET mir1al>=1.1.0 miral>=1.1.0)
+    pkg_check_modules(MIRCOMMON REQUIRED IMPORTED_TARGET mir1common)
+    pkg_check_modules(MIRCORE REQUIRED IMPORTED_TARGET mir1core)
+    pkg_check_modules(MIRWAYLAND REQUIRED IMPORTED_TARGET mir1wayland>=1.2)
+    pkg_check_modules(MIRTEST REQUIRED IMPORTED_TARGET mir1test>=0.26)
 
     # Bundled miroil for Mir1
     set(MIROIL_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/src/platforms/mirserver/miroil/include)
@@ -72,19 +63,17 @@ else()
     set(MIR_VERSION_MAJOR 1)
 endif()
 
-pkg_check_modules(WAYLAND_SERVER REQUIRED wayland-server)
-
-pkg_check_modules(XKBCOMMON xkbcommon REQUIRED)
-pkg_check_modules(GLIB glib-2.0 REQUIRED)
-pkg_check_modules(LOMIRI_APP_LAUNCH lomiri-app-launch-0 REQUIRED)
-pkg_check_modules(URL_DISPATCHER lomiri-url-dispatcher REQUIRED)
-pkg_check_modules(EGL egl)
-pkg_check_modules(LTTNG lttng-ust)
-pkg_check_modules(GSETTINGS_QT REQUIRED gsettings-qt)
+pkg_check_modules(WAYLAND_SERVER REQUIRED IMPORTED_TARGET wayland-server)
+pkg_check_modules(XKBCOMMON REQUIRED IMPORTED_TARGET xkbcommon)
+pkg_check_modules(GLIB REQUIRED IMPORTED_TARGET glib-2.0)
+pkg_check_modules(LOMIRI_APP_LAUNCH REQUIRED IMPORTED_TARGET lomiri-app-launch-0)
+pkg_check_modules(URL_DISPATCHER REQUIRED IMPORTED_TARGET lomiri-url-dispatcher)
+pkg_check_modules(EGL REQUIRED IMPORTED_TARGET egl)
+pkg_check_modules(LTTNG REQUIRED IMPORTED_TARGET lttng-ust)
+pkg_check_modules(GSETTINGS_QT REQUIRED IMPORTED_TARGET gsettings-qt)
 
 if(WITH_CONTENTHUB)
-pkg_check_modules(CONTENT_HUB liblomiri-content-hub>=1.0.0 REQUIRED)
-message(STATUS "Bulding with content-hub")
+    pkg_check_modules(CONTENT_HUB REQUIRED IMPORTED_TARGET liblomiri-content-hub>=1.0.0)
 endif()
 
 # Lomiri shell Application API headers (lomiri/shell/application/*.h, formerly
@@ -116,8 +105,8 @@ add_definitions(-DQT_NO_KEYWORDS)
 if (NO_TESTS)
     message(STATUS "Tests disabled")
 else()
-    pkg_check_modules(QTDBUSTEST libqtdbustest-1 REQUIRED)
-    pkg_check_modules(QTDBUSMOCK libqtdbusmock-1 REQUIRED)
+    pkg_check_modules(QTDBUSTEST REQUIRED IMPORTED_TARGET libqtdbustest-1)
+    pkg_check_modules(QTDBUSMOCK REQUIRED IMPORTED_TARGET libqtdbusmock-1)
 
     include(CTest)
     enable_testing()

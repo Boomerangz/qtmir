@@ -10,12 +10,6 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/src/common
 )
 
-include_directories(
-  SYSTEM
-  ${MIRSERVER_INCLUDE_DIRS}
-  ${MIRAL_INCLUDE_DIRS}
-)
-
 add_executable(QtEventFeederTest ${EVENT_FEEDER_TEST_SOURCES})
 
 target_link_libraries(

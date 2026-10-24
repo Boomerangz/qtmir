@@ -32,18 +32,15 @@ add_library(miroil OBJECT
 )
 
 target_include_directories(miroil
-    PUBLIC  "${MIROIL_INCLUDE_DIRS}" "${qtmir_include}" "${qtmir_include}/qtmir"
-    PRIVATE ${MIRAL_INCLUDE_DIRS}
-    ${MIRCOMMON_INCLUDE_DIRS}
-    ${MIRSERVER_INCLUDE_DIRS}
-    ${MIRRENDERERGLDEV_INCLUDE_DIRS}
+    PUBLIC  "${MIROIL_INCLUDE_DIRS}"
+    PRIVATE "${qtmir_include}" "${qtmir_include}/qtmir"
 )
 
-target_link_libraries(miroil
-    PRIVATE
-    ${MIRAL_LDFLAGS}
-    ${MIRSERVER_LDFLAGS}
-
-    ${EGL_LDFLAGS}
+target_link_libraries(miroil PRIVATE
+    PkgConfig::EGL
+    PkgConfig::MIRAL
+    PkgConfig::MIRCOMMON
+    PkgConfig::MIRRENDERERGLDEV
+    PkgConfig::MIRSERVER
     Qt::Core
 )

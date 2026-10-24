@@ -2,13 +2,6 @@ set(DEMO_SHELL qtmir-demo-shell)
 
 add_definitions(-DQPA_MIRSERVER_NAME=\"${QPA_MIRSERVER_NAME}\")
 
-include_directories(
-    SYSTEM
-    ${MIRSERVER_INCLUDE_DIRS}
-    ${MIROIL_INCLUDE_DIRS}
-    ${MIRAL_INCLUDE_DIRS}
-)
-
 add_executable(${DEMO_SHELL}
     pointerposition.cpp
     screenwindow.cpp
