@@ -81,7 +81,6 @@ pkg_check_modules(WAYLAND_SERVER REQUIRED wayland-server)
 
 pkg_check_modules(XKBCOMMON xkbcommon REQUIRED)
 pkg_check_modules(GLIB glib-2.0 REQUIRED)
-pkg_check_modules(PROCESS_CPP process-cpp REQUIRED)
 pkg_check_modules(LOMIRI_APP_LAUNCH lomiri-app-launch-0 REQUIRED)
 pkg_check_modules(URL_DISPATCHER lomiri-url-dispatcher REQUIRED)
 pkg_check_modules(EGL egl)
