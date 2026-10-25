@@ -1,14 +1,9 @@
-find_package(QmlPlugins)
-
-# Set up and install a QML plugin.
-#
-# add_qml_plugin(plugin version path
-#     [...]  # See export_qmlfiles and export_qmlplugin documentation for more options
-# )
-
-macro(add_qml_plugin PLUGIN VERSION PATH)
-    export_qmlfiles(${PLUGIN} ${PATH} DESTINATION ${QML_MODULE_INSTALL_DIR} ${ARGN})
-    export_qmlplugin(${PLUGIN} ${VERSION} ${PATH} DESTINATION ${QML_MODULE_INSTALL_DIR} ${ARGN})
-endmacro()
+if(QT_VERSION_MAJOR EQUAL 5)
+    function(qt_add_qml_module TARGET)
+        cmake_parse_arguments(PARSE_ARGV 1 arg "" "" "SOURCES")
+        add_library(${TARGET} SHARED ${arg_SOURCES})
+        configure_file(qmldir qmldir COPYONLY)
+    endfunction()
+endif()
 
 add_subdirectory(QtMir)

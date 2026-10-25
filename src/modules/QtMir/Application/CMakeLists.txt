@@ -1,35 +1,19 @@
 include(UseLttngGenTp)
 
-set(QMLMIRPLUGIN_SRC
-    application_manager.cpp
-    application.cpp
-    dbusfocusinfo.cpp
-    plugin.cpp
-    mirsurface.cpp
-    mirsurfaceinterface.h
-    mirsurfaceitem.cpp
-    mirsurfacelistmodel.cpp
-    mirbuffersgtexture.cpp
-    proc_info.cpp
-    session.cpp
-    sharedwakelock.cpp
-    surfacemanager.cpp
-    taskcontroller.cpp
-    lal/applicationinfo.cpp
-    lal/taskcontroller.cpp
-    timer.cpp
-    timesource.cpp
-    settings.cpp
-    windowmodel.cpp
-# Feed the automoc monster
-    session_interface.h
-    applicationinfo.h
-    taskcontroller.h
-    settings_interface.h
+file(GLOB QMLMIRPLUGIN_SRC CONFIGURE_DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/lal/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/lal/*.h
 )
 
-add_library(qtmirapplicationplugin SHARED
-    ${QMLMIRPLUGIN_SRC}
+qt_add_qml_module(qtmirapplicationplugin
+    URI QtMir.Application
+    VERSION 0.1
+    PLUGIN_TARGET qtmirapplicationplugin
+    CLASS_NAME QtMirApplicationPlugin
+    NO_GENERATE_PLUGIN_SOURCE
+    SOURCES ${QMLMIRPLUGIN_SRC}
 )
 
 add_lttng_tracepoints(qtmirapplicationplugin tracepoints.tp)
@@ -57,7 +41,6 @@ if(NOT WITH_MIR2)
     target_link_libraries(qtmirapplicationplugin PkgConfig::MIRRENDERERGLDEV)
 endif()
 
-
-# install
-add_qml_plugin(QtMir.Application 0.1 QtMir/Application TARGETS qtmirapplicationplugin)
+install(TARGETS qtmirapplicationplugin DESTINATION ${QML_MODULE_INSTALL_DIR}/QtMir/Application)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/qmldir DESTINATION ${QML_MODULE_INSTALL_DIR}/QtMir/Application)
 install(FILES com.canonical.qtmir.gschema.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/glib-2.0/schemas)
