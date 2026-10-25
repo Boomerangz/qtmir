@@ -1,33 +1,18 @@
 cmake_minimum_required(VERSION 3.24)
 project(qtmir VERSION 0.7.2 LANGUAGES C CXX)
 
-# Find includes in corresponding build directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-# add custom cmake modules
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
-
-# Instruct CMake to run moc automatically when needed.
-set(CMAKE_AUTOMOC ON)
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wall -fno-strict-aliasing -Wextra")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
-
-set (CMAKE_C_STANDARD 17)
-set (CMAKE_CXX_STANDARD 20)
-set (CMAKE_CXX_STANDARD_REQUIRED ON)
-set (CMAKE_CXX_EXTENSIONS OFF)
-# gtest receives only CMAKE_CXX_FLAGS and its C++ version must match
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CMAKE_CXX_STANDARD}")
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
 option(WITH_CONTENTHUB "Build with content-hub" OFF)
 option(WITH_MIR2 "Build with Mir 2" OFF)
-option(Werror "Treat warnings as errors" ON)
+option(CMAKE_COMPILE_WARNING_AS_ERROR "Treat warnings as errors" ON)
 
-include(FindPkgConfig)
+include(CTest)
+include(GNUInstallDirs)
 
 set(QT_VERSION_MAJOR 5)
+
+find_package(PkgConfig REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
     Core DBus Gui Qml Quick Sensors Test
     # For the QPA
@@ -72,12 +57,16 @@ if(WITH_CONTENTHUB)
     pkg_check_modules(CONTENT_HUB REQUIRED IMPORTED_TARGET liblomiri-content-hub>=1.0.0)
 endif()
 
-# Use the fast string builder
-add_definitions(-DQT_USE_QSTRINGBUILDER)
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# Standard install paths
-include(GNUInstallDirs)
-
+add_compile_options(-Wall -Wextra)
+add_link_options(LINKER:--no-undefined)
+add_compile_definitions(QT_USE_QSTRINGBUILDER QT_NO_KEYWORDS)
 
 # Set QML module install path
 set(QML_MODULE_INSTALL_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/qt5/qml")
@@ -85,27 +74,10 @@ set(QTMIR_DATA_DIR ${CMAKE_INSTALL_FULL_DATADIR}/qtmir)
 set(QPA_PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/qt5/plugins/platforms")
 set(QPA_MIRSERVER_NAME "mir${MIR_VERSION_MAJOR}server")
 
-if (Werror)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
-endif()
-
-
-# Mir uses boost, which does not like Qt defining macros named "signals" and "slots"
-add_definitions(-DQT_NO_KEYWORDS)
-
-if (NO_TESTS)
-    message(STATUS "Tests disabled")
-else()
-    pkg_check_modules(QTDBUSTEST REQUIRED IMPORTED_TARGET libqtdbustest-1)
-    pkg_check_modules(QTDBUSMOCK REQUIRED IMPORTED_TARGET libqtdbusmock-1)
-
-    include(CTest)
-    enable_testing()
-    add_subdirectory(tests)
-endif()
-
 add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(demos)
 add_subdirectory(data)
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
