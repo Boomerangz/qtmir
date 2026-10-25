@@ -14,7 +14,6 @@ set_target_properties(qpa-mirserver PROPERTIES
 target_link_libraries(qpa-mirserver PRIVATE
     qtmirserver
     PkgConfig::EGL
-    PkgConfig::LTTNG
     PkgConfig::MIRCOMMON
     PkgConfig::MIRWAYLAND
     PkgConfig::URL_DISPATCHER

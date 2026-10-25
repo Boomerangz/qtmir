@@ -5,9 +5,6 @@ set(QTMIRSERVER_SONAME "qt${QT_VERSION_MAJOR}mir${MIR_VERSION_MAJOR}server")
 # TODO: consider the miroil/miral SOVERSION with Mir2
 set(QTMIRSERVER_ABI 1)
 
-# Generate tracepoints.c and .h from tracepoints.tp
-add_lttng_gen_tp(NAME tracepoints)
-
 file(GLOB QTMIRSERVER_SRC CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     ${CMAKE_SOURCE_DIR}/include/qtmir/*.h
@@ -26,8 +23,9 @@ endif()
 
 add_library(qtmirserver SHARED
     ${QTMIRSERVER_SRC}
-    ${CMAKE_CURRENT_BINARY_DIR}/tracepoints.c
 )
+
+add_lttng_tracepoints(qtmirserver tracepoints.tp)
 
 target_link_libraries(qtmirserver
     PUBLIC
@@ -41,7 +39,6 @@ target_link_libraries(qtmirserver
     PRIVATE
         wayland-protocols
         PkgConfig::EGL
-        PkgConfig::LTTNG
         PkgConfig::MIRCOMMON
         PkgConfig::MIRWAYLAND
         PkgConfig::URL_DISPATCHER

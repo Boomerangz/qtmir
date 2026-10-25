@@ -1,11 +1,5 @@
 include(UseLttngGenTp)
 
-# Generate tracepoints.c and .h from tracepoints.tp
-add_lttng_gen_tp(NAME tracepoints)
-add_custom_target(QtMirApplication_LTTNG
-    DEPENDS tracepoints.h tracepoints.c
-)
-
 set(QMLMIRPLUGIN_SRC
     application_manager.cpp
     application.cpp
@@ -25,7 +19,6 @@ set(QMLMIRPLUGIN_SRC
     lal/taskcontroller.cpp
     timer.cpp
     timesource.cpp
-    tracepoints.c
     settings.cpp
     windowmodel.cpp
 # Feed the automoc monster
@@ -38,14 +31,14 @@ set(QMLMIRPLUGIN_SRC
 add_library(qtmirapplicationplugin SHARED
     ${QMLMIRPLUGIN_SRC}
 )
-add_dependencies(qtmirapplicationplugin QtMirApplication_LTTNG)
+
+add_lttng_tracepoints(qtmirapplicationplugin tracepoints.tp)
 
 target_link_libraries(
     qtmirapplicationplugin
     PkgConfig::GLIB
     PkgConfig::GSETTINGS_QT
     PkgConfig::LOMIRI_APP_LAUNCH
-    PkgConfig::LTTNG
     PkgConfig::MIRSERVER
     Qt::Core
     Qt::DBus
