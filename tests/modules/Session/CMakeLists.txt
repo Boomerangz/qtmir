@@ -4,11 +4,6 @@ set(
   session_test.cpp
 )
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/src/modules
-  ${CMAKE_SOURCE_DIR}/tests/framework
-)
-
 add_executable(session_test ${SESSION_TEST_SOURCES})
 
 

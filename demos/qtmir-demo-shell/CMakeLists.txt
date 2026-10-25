@@ -7,6 +7,8 @@ add_executable(${DEMO_SHELL}
     main.cpp
 )
 
+target_include_directories(${DEMO_SHELL} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+
 target_link_libraries(
     ${DEMO_SHELL}
 

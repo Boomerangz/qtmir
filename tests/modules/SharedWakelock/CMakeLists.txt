@@ -3,10 +3,6 @@ set(
   sharedwakelock_test.cpp
 )
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/src/modules
-)
-
 add_executable(sharedwakelock_test ${SHARED_WAKELOCK_TEST_SOURCES})
 
 target_link_libraries(

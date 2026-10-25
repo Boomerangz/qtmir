@@ -3,11 +3,6 @@ set(
   application_manager_test.cpp
 )
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/src/modules
-  ${CMAKE_SOURCE_DIR}/tests/framework
-)
-
 add_executable(applicationmanager_test ${APPLICATION_MANAGER_TEST_SOURCES})
 
 

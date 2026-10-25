@@ -6,11 +6,6 @@ set(
   windowmodel_test.cpp
 )
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/src/modules
-  ${CMAKE_SOURCE_DIR}/tests/framework
-)
-
 add_executable(windowmanager_test ${MIR_WINDOW_MANAGER_TEST_SOURCES})
 
 target_link_libraries(

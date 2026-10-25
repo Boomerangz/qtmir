@@ -3,10 +3,6 @@ set(
   urlbuilderdispatcher_test.cpp
 )
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/tests/framework
-)
-
 add_executable(URLBuilderDispatcherTest ${URLBUILDERDISPATCHER_TEST_RESOURCES})
 
 target_link_libraries(

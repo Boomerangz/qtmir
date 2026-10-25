@@ -1,7 +1,3 @@
-include_directories(
-    ${CMAKE_SOURCE_DIR}/src/modules
-)
-
 set(QTMIR_TEST_PRIVATE_SRC
     fake_application_info.cpp
     fake_mirsurface.cpp
@@ -28,6 +24,8 @@ set(QTMIR_TEST_PRIVATE_SRC
 add_library(qtmir-test-framework-static STATIC
     ${QTMIR_TEST_PRIVATE_SRC}
 )
+
+target_include_directories(qtmir-test-framework-static PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(
     qtmir-test-framework-static

@@ -3,11 +3,6 @@ set(
   application_test.cpp
 )
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/src/modules
-  ${CMAKE_SOURCE_DIR}/tests/framework
-)
-
 add_executable(application_test ${APPLICATION_TEST_SOURCES})
 
 

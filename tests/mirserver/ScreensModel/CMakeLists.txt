@@ -6,10 +6,6 @@ set(
   testable_screensmodel.h
 )
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/tests/framework
-)
-
 add_executable(ScreensModelTest ${SCREENCONTROLLER_TEST_SOURCES})
 
 target_link_libraries(

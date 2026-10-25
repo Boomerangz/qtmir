@@ -34,6 +34,8 @@ add_library(qtmirapplicationplugin SHARED
 
 add_lttng_tracepoints(qtmirapplicationplugin tracepoints.tp)
 
+target_include_directories(qtmirapplicationplugin PUBLIC ${CMAKE_SOURCE_DIR}/src/modules)
+
 target_link_libraries(
     qtmirapplicationplugin
     PkgConfig::GLIB

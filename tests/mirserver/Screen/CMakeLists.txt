@@ -3,11 +3,9 @@ set(
   screen_test.cpp
 )
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/tests/framework
-)
-
 add_executable(ScreenTest ${SCREEN_TEST_SOURCES})
+
+target_include_directories(ScreenTest PRIVATE ${CMAKE_SOURCE_DIR}/tests/framework)
 
 target_link_libraries(
   ScreenTest

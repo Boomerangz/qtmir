@@ -73,11 +73,6 @@ if(WITH_CONTENTHUB)
     pkg_check_modules(CONTENT_HUB REQUIRED IMPORTED_TARGET liblomiri-content-hub>=1.0.0)
 endif()
 
-# Lomiri shell Application API headers (lomiri/shell/application/*.h, formerly
-# from liblomiri-shell-api-dev) now live in this tree; make them globally
-# available like the pkg-config module used to.
-include_directories(${CMAKE_SOURCE_DIR}/include)
-
 # Use the fast string builder
 add_definitions(-DQT_USE_QSTRINGBUILDER)
 

@@ -4,11 +4,9 @@ set(
   timestamp_test.cpp
 )
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/src/modules
-)
-
 add_executable(general_test ${GENERAL_TEST_SOURCES})
+
+target_include_directories(general_test PRIVATE ${CMAKE_SOURCE_DIR}/src/modules)
 
 target_link_libraries(
   general_test
