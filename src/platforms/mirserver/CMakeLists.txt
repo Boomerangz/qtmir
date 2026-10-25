@@ -2,13 +2,6 @@ include(UseLttngGenTp)
 
 set(INCLUDE_NAME "qtmir-qt${QT_VERSION_MAJOR}-mir${MIR_VERSION_MAJOR}")
 set(QTMIRSERVER_SONAME "qt${QT_VERSION_MAJOR}mir${MIR_VERSION_MAJOR}server")
-set(QPA_MIRSERVER_NAME "mir${MIR_VERSION_MAJOR}server")
-set(QPA_MIRSERVER_SONAME "qpa-${QPA_MIRSERVER_NAME}")
-
-# Used by src/modules and demos/ directories.
-set(QPA_MIRSERVER_NAME "${QPA_MIRSERVER_NAME}" PARENT_SCOPE)
-
-add_definitions(-DQPA_MIRSERVER_NAME=\"${QPA_MIRSERVER_NAME}\")
 
 # TODO: consider the miroil/miral SOVERSION with Mir2
 set(QTMIRSERVER_ABI 1)
@@ -16,7 +9,7 @@ set(QTMIRSERVER_ABI 1)
 if(NOT WITH_MIR2)
     add_subdirectory(miroil)
 endif()
-
+add_subdirectory(qpa)
 add_subdirectory(wayland-generated)
 
 if (WITH_CONTENTHUB)
@@ -157,6 +150,11 @@ target_link_libraries(qtmirserver
         Qt::EglSupportPrivate
 )
 
+# WORKAROUND: tests and qpa need private header files
+target_include_directories(qtmirserver PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_compile_definitions(qtmirserver PUBLIC QPA_MIRSERVER_NAME=\"${QPA_MIRSERVER_NAME}\")
+
 set_target_properties(qtmirserver
   PROPERTIES
   OUTPUT_NAME ${QTMIRSERVER_SONAME}
@@ -203,32 +201,3 @@ install(
   FILES ${CMAKE_CURRENT_BINARY_DIR}/${QTMIRSERVER_SONAME}.pc
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
 )
-
-configure_file(mirserver.json.in mirserver.json)
-
-add_library(qpa-mirserver SHARED
-    mirserverintegration.cpp
-    plugin.cpp
-)
-
-set_target_properties(qpa-mirserver
-  PROPERTIES
-  OUTPUT_NAME ${QPA_MIRSERVER_SONAME})
-
-target_link_libraries(qpa-mirserver PRIVATE
-    qtmirserver
-    ${QTMIRSERVER_PRIVATE_DEPS}
-    Qt::Core
-    Qt::DBus
-    Qt::GuiPrivate
-    Qt::Quick
-    Qt::QuickPrivate
-    Qt::Sensors
-    Qt::Qml
-    Qt::EventDispatcherSupportPrivate
-    Qt::FontDatabaseSupportPrivate
-    Qt::ServiceSupportPrivate
-    Qt::ThemeSupportPrivate
-)
-
-install(TARGETS qpa-mirserver LIBRARY DESTINATION "${QPA_PLUGIN_INSTALL_DIR}")

@@ -3,10 +3,6 @@ set(
   eventbuilder_test.cpp
 )
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
-)
-
 add_executable(EventBuilderTest ${EVENT_BUILDER_TEST_SOURCES})
 
 target_link_libraries(

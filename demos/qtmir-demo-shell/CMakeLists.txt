@@ -1,7 +1,5 @@
 set(DEMO_SHELL qtmir-demo-shell)
 
-add_definitions(-DQPA_MIRSERVER_NAME=\"${QPA_MIRSERVER_NAME}\")
-
 add_executable(${DEMO_SHELL}
     pointerposition.cpp
     screenwindow.cpp

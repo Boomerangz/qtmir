@@ -89,6 +89,7 @@ include(GNUInstallDirs)
 set(QML_MODULE_INSTALL_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/qt5/qml")
 set(QTMIR_DATA_DIR ${CMAKE_INSTALL_FULL_DATADIR}/qtmir)
 set(QPA_PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/qt5/plugins/platforms")
+set(QPA_MIRSERVER_NAME "mir${MIR_VERSION_MAJOR}server")
 
 if (Werror)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")

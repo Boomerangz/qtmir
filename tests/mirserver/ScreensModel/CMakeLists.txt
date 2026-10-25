@@ -8,7 +8,6 @@ set(
 
 include_directories(
   ${CMAKE_SOURCE_DIR}/tests/framework
-  ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
 )
 
 add_executable(ScreensModelTest ${SCREENCONTROLLER_TEST_SOURCES})

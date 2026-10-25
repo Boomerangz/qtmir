@@ -1,11 +1,5 @@
 include(UseLttngGenTp)
 
-add_definitions(-DQPA_MIRSERVER_NAME=\"${QPA_MIRSERVER_NAME}\")
-
-include_directories(
-    ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
-)
-
 # Generate tracepoints.c and .h from tracepoints.tp
 add_lttng_gen_tp(NAME tracepoints)
 add_custom_target(QtMirApplication_LTTNG
