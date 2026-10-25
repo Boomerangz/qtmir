@@ -82,8 +82,6 @@ Files: demos/qml-demo-shell/screens.cpp
  src/platforms/mirserver/miropenglcontext.cpp
  src/platforms/mirserver/miropenglcontext.h
  src/platforms/mirserver/mirserverapplication.cpp
- src/platforms/mirserver/mirserverintegration.cpp
- src/platforms/mirserver/mirserverintegration.h
  src/platforms/mirserver/mirsingleton.cpp
  src/platforms/mirserver/mirsingleton.h
  src/platforms/mirserver/namedcursor.h
@@ -93,14 +91,17 @@ Files: demos/qml-demo-shell/screens.cpp
  src/platforms/mirserver/offscreensurface.h
  src/platforms/mirserver/platformscreen.cpp
  src/platforms/mirserver/platformscreen.h
- src/platforms/mirserver/plugin.cpp
- src/platforms/mirserver/plugin.h
  src/platforms/mirserver/promptsessionlistener.cpp
  src/platforms/mirserver/promptsessionlistener.h
  src/platforms/mirserver/qmirserver.cpp
  src/platforms/mirserver/qmirserver.h
  src/platforms/mirserver/qmirserver_p.cpp
  src/platforms/mirserver/qmirserver_p.h
+ src/platforms/mirserver/qpa/mirserverintegration.cpp
+ src/platforms/mirserver/qpa/mirserverintegration.h
+ src/platforms/mirserver/qpa/plugin.cpp
+ src/platforms/mirserver/qpa/plugin.h
+ src/platforms/mirserver/qpa/ubuntutheme.h
  src/platforms/mirserver/qtcompositor.cpp
  src/platforms/mirserver/qtcompositor.h
  src/platforms/mirserver/qteventfeeder.h
@@ -120,7 +121,6 @@ Files: demos/qml-demo-shell/screens.cpp
  src/platforms/mirserver/shelluuid.h
  src/platforms/mirserver/surfaceobserver.cpp
  src/platforms/mirserver/surfaceobserver.h
- src/platforms/mirserver/ubuntutheme.h
  src/platforms/mirserver/windowcontroller.cpp
  src/platforms/mirserver/windowcontroller.h
  src/platforms/mirserver/windowmodelnotifier.cpp
@@ -213,7 +213,7 @@ License: LGPL-3
 Files: CMakeLists.txt
  Jenkinsfile
  NEWS
- README
+ README.md
  cmake/modules/FindGLESv2.cmake
  cmake/modules/QmlTest.cmake
  cmake/modules/UseLttngGenTp.cmake
@@ -250,7 +250,8 @@ Files: CMakeLists.txt
  src/platforms/mirserver/miroil/include/miroil/display_id.h
  src/platforms/mirserver/miroil/src/CMakeLists.txt
  src/platforms/mirserver/miroil/src/mir_prompt_session.cpp
- src/platforms/mirserver/mirserver.json
+ src/platforms/mirserver/qpa/CMakeLists.txt
+ src/platforms/mirserver/qpa/mirserver.json.in
  src/platforms/mirserver/qtmir.cpp
  src/platforms/mirserver/qtmirserver.pc.in
  src/platforms/mirserver/tracepoints.tp
