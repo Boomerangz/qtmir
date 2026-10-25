@@ -1,4 +1,5 @@
 include(UseLttngGenTp)
+include(WaylandProtocolGenerator)
 
 set(QTMIRSERVER_SONAME "qt${QT_VERSION_MAJOR}mir${MIR_VERSION_MAJOR}server")
 
@@ -26,6 +27,7 @@ add_library(qtmirserver SHARED
 )
 
 add_lttng_tracepoints(qtmirserver tracepoints.tp)
+add_wayland_protocol(qtmirserver "qt_" wayland-protocols/qt-windowmanager.xml)
 
 target_link_libraries(qtmirserver
     PUBLIC
@@ -37,7 +39,6 @@ target_link_libraries(qtmirserver
         Qt::Gui
 
     PRIVATE
-        wayland-protocols
         PkgConfig::EGL
         PkgConfig::MIRCOMMON
         PkgConfig::MIRWAYLAND
@@ -108,4 +109,3 @@ if(NOT WITH_MIR2)
     add_subdirectory(miroil)
 endif()
 add_subdirectory(qpa)
-add_subdirectory(wayland-generated)
