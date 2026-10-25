@@ -16,4 +16,4 @@ target_link_libraries(
   GTest::gmock_main
 )
 
-add_test(General general_test)
+add_test(NAME General COMMAND general_test)

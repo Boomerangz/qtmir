@@ -9,11 +9,8 @@ add_executable(${DEMO_SHELL}
 
 target_include_directories(${DEMO_SHELL} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
-target_link_libraries(
-    ${DEMO_SHELL}
-
+target_link_libraries(${DEMO_SHELL} PRIVATE
     qtmirserver
-
     Qt::Core
     Qt::DBus
     Qt::Qml
@@ -22,15 +19,13 @@ target_link_libraries(
 
 file(GLOB QML_JS_FILES *.qml *.js *.png)
 
-add_custom_target(${DEMO_SHELL}-qmlfiles
-                  SOURCES ${QML_JS_FILES})
+add_custom_target(${DEMO_SHELL}-qmlfiles SOURCES ${QML_JS_FILES})
 
 # install binaries
 install(TARGETS ${DEMO_SHELL}
-     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
- )
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
 
-install(FILES
-    ${QML_JS_FILES}
+install(FILES ${QML_JS_FILES}
     DESTINATION ${QTMIR_DATA_DIR}/${DEMO_SHELL}
 )

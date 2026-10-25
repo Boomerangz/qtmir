@@ -1,22 +1,16 @@
-set(
-  SCREENCONTROLLER_TEST_SOURCES
-  screensmodel_test.cpp
-  # to be moc-ed
-  stub_screen.h
-  testable_screensmodel.h
+add_executable(ScreensModelTest
+    screensmodel_test.cpp
+    stub_screen.h
+    testable_screensmodel.h
 )
 
-add_executable(ScreensModelTest ${SCREENCONTROLLER_TEST_SOURCES})
-
-target_link_libraries(
-  ScreensModelTest
-  qtmirserver
-  Qt::GuiPrivate
-
-  qtmir-test-framework-static
-  PkgConfig::MIRRENDERERGLDEV
-  PkgConfig::MIRTEST
-  GTest::gmock_main
+target_link_libraries(ScreensModelTest PRIVATE
+    qtmirserver
+    qtmir-test-framework-static
+    PkgConfig::MIRRENDERERGLDEV
+    PkgConfig::MIRTEST
+    Qt::GuiPrivate
+    GTest::gmock_main
 )
 
-add_test(ScreensModel, ScreensModelTest)
+add_test(NAME ScreensModel COMMAND ScreensModelTest)

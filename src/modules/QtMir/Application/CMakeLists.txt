@@ -20,8 +20,8 @@ add_lttng_tracepoints(qtmirapplicationplugin tracepoints.tp)
 
 target_include_directories(qtmirapplicationplugin PUBLIC ${CMAKE_SOURCE_DIR}/src/modules)
 
-target_link_libraries(
-    qtmirapplicationplugin
+target_link_libraries(qtmirapplicationplugin PUBLIC
+    qtmirserver
     PkgConfig::GLIB
     PkgConfig::GSETTINGS_QT
     PkgConfig::LOMIRI_APP_LAUNCH
@@ -33,12 +33,10 @@ target_link_libraries(
     Qt::QmlPrivate
     Qt::Quick
     Qt::QuickPrivate
-
-    qtmirserver
 )
 
 if(NOT WITH_MIR2)
-    target_link_libraries(qtmirapplicationplugin PkgConfig::MIRRENDERERGLDEV)
+    target_link_libraries(qtmirapplicationplugin PRIVATE PkgConfig::MIRRENDERERGLDEV)
 endif()
 
 install(TARGETS qtmirapplicationplugin DESTINATION ${QML_MODULE_INSTALL_DIR}/QtMir/Application)

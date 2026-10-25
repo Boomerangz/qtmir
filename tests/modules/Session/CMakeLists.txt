@@ -1,22 +1,13 @@
-set(
-  SESSION_TEST_SOURCES
-  taskcontroller_test.cpp
-  session_test.cpp
+add_executable(session_test
+    session_test.cpp
+    taskcontroller_test.cpp
 )
 
-add_executable(session_test ${SESSION_TEST_SOURCES})
-
-
-target_link_libraries(
-  session_test
-
-  qtmirapplicationplugin
-
-  Qt::Test
-
-  qtmir-test-framework-static
-
-  GTest::gmock_main
+target_link_libraries(session_test PRIVATE
+    qtmirapplicationplugin
+    qtmir-test-framework-static
+    Qt::Test
+    GTest::gmock_main
 )
 
-add_test(Session, session_test)
+add_test(NAME Session COMMAND session_test)

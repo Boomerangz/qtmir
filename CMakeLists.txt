@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.24)
-
 project(qtmir VERSION 0.7.2 LANGUAGES C CXX)
 
 # Find includes in corresponding build directories
