@@ -16,8 +16,7 @@ target_link_libraries(
   qtmir-test-framework-static
 
   PkgConfig::MIRTEST
-  ${GTEST_BOTH_LIBRARIES}
-  ${GMOCK_LIBRARIES}
+  GTest::gmock_main
 )
 
 add_test(SurfaceManager, surfacemanager_test)

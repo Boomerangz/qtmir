@@ -20,8 +20,7 @@ target_link_libraries(
 
   PkgConfig::MIRAL
   PkgConfig::MIRTEST
-  ${GTEST_BOTH_LIBRARIES}
-  ${GMOCK_LIBRARIES}
+  GTest::gmock_main
 )
 
 add_test(WindowManager windowmanager_test)

@@ -16,8 +16,7 @@ target_link_libraries(
 
   qtmir-test-framework-static
 
-  ${GTEST_BOTH_LIBRARIES}
-  ${GMOCK_LIBRARIES}
+  GTest::gmock_main
 )
 
 add_test(Session, session_test)

@@ -8,8 +8,7 @@ add_executable(EventBuilderTest ${EVENT_BUILDER_TEST_SOURCES})
 target_link_libraries(
   EventBuilderTest
   qtmirserver
-  ${GTEST_BOTH_LIBRARIES}
-  ${GMOCK_LIBRARIES}
+  GTest::gmock_main
 )
 
 add_test(EventBuilder, EventBuilderTest)

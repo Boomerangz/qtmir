@@ -12,8 +12,7 @@ target_link_libraries(
   PkgConfig::QTDBUSMOCK
   PkgConfig::QTDBUSTEST
   Qt::Test
-  ${GTEST_BOTH_LIBRARIES}
-  ${GMOCK_LIBRARIES}
+  GTest::gmock
 )
 
 add_test(SharedWakelock, sharedwakelock_test)

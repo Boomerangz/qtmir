@@ -33,6 +33,5 @@ target_link_libraries(
     qtmirapplicationplugin
     PkgConfig::MIRRENDERERGLDEV
     PkgConfig::MIRTEST
-    ${GTEST_BOTH_LIBRARIES}
-    ${GMOCK_LIBRARIES}
+    GTest::gmock
 )

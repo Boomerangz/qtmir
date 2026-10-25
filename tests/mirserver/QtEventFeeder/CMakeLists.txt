@@ -10,8 +10,7 @@ target_link_libraries(
   QtEventFeederTest
   qtmirserver
   Qt::GuiPrivate
-  ${GTEST_BOTH_LIBRARIES}
-  ${GMOCK_LIBRARIES}
+  GTest::gmock_main
 )
 
 add_test(QtEventFeeder, QtEventFeederTest)

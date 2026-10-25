@@ -13,9 +13,7 @@ target_link_libraries(
 
   qtmir-common
   Qt::Gui
-
-  ${GTEST_BOTH_LIBRARIES}
-  ${GMOCK_LIBRARIES}
+  GTest::gmock_main
 )
 
 add_test(General general_test)

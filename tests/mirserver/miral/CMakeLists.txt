@@ -7,8 +7,7 @@ add_executable(MirALTests ${MIRAL_TEST_SOURCES})
 
 target_link_libraries(MirALTests
   qtmirserver
-  ${GTEST_BOTH_LIBRARIES}
-  ${GMOCK_LIBRARIES}
+  GTest::gmock_main
 )
 
 add_test(MirAL, MirALTests)

@@ -1,4 +1,4 @@
-find_package(GMock)
+find_package(GTest REQUIRED)
 
 if(NOT WITH_MIR2)
     # TODO: fix for Mir2
