@@ -21,6 +21,7 @@
 #include "logging.h"
 #include "wrappedwindowmanagementpolicy.h"
 #include "inputdeviceobserver.h"
+#include "inputmethodauthorizer.h"
 #include "qteventfeeder.h"
 #include "qtmir/sessionauthorizer.h"
 #include "miropenglcontext.h"
@@ -44,6 +45,7 @@
 #if MIR_SERVER_VERSION >= MIR_VERSION_NUMBER(2, 0, 0)
 #include <miral/decorations.h>
 #endif
+#include <miral/application.h>
 #include <miral/set_terminator.h>
 #include <miral/wayland_extensions.h>
 #include <miral/x11_support.h>
@@ -189,6 +191,13 @@ inline void exportEnvVarToSystemd(const std::string& key, const std::string& val
     sdManager.call("SetEnvironment", QStringList() << pair);
 }
 
+#if MIR_SERVER_VERSION >= MIR_VERSION_NUMBER(2, 16, 0)
+inline bool onlyTrustedInputMethod(miral::WaylandExtensions::EnableInfo const& info)
+{
+    return qtmir::isTrustedInputMethod(miral::pid_of(info.app()));
+}
+#endif
+
 void QMirServerPrivate::run(const std::function<void()> &startCallback)
 {
 #if MIR_SERVER_VERSION < MIR_VERSION_NUMBER(2, 0, 0)
@@ -216,6 +225,10 @@ void QMirServerPrivate::run(const std::function<void()> &startCallback)
 
     miral::WaylandExtensions waylandExtensions{};
     waylandExtensions.add_extension(qtmir::qtWindowmanagerExtension());
+#if MIR_SERVER_VERSION >= MIR_VERSION_NUMBER(2, 16, 0)
+    waylandExtensions.conditionally_enable(miral::WaylandExtensions::zwp_input_method_v1, onlyTrustedInputMethod);
+    waylandExtensions.conditionally_enable(miral::WaylandExtensions::zwp_input_panel_v1, onlyTrustedInputMethod);
+#endif
     waylandExtensions.enable(miral::WaylandExtensions::zxdg_output_manager_v1);
 
     runner.set_exception_handler([this]

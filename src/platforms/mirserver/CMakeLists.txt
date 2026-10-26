@@ -129,6 +129,7 @@ add_library(qtmirserver-nomirserver OBJECT
     tracepoints.c
     surfaceobserver.cpp
     initialsurfacesizes.cpp
+    inputmethodauthorizer.cpp
     orientationsensor.cpp
     screenadaptor.cpp
     screenadaptormodel.cpp
