@@ -561,7 +561,7 @@ void ApplicationManager::authorizeSession(const pid_t pid, bool &authorized)
             tracepoint(qtmir, appIdHasProcessId_start);
             if (m_taskController->appIdHasProcessId(app->appId(), pid)) {
                 authorized = true;
-                m_authorizedPids.insertMulti(pid, app->appId());
+                m_authorizedPids.insert(pid, app->appId());
                 tracepoint(qtmir, appIdHasProcessId_end, 1); //found
                 return;
             }
@@ -594,7 +594,7 @@ void ApplicationManager::authorizeSession(const pid_t pid, bool &authorized)
 
         const QStringList arguments(info->asStringList());
         queuedAddApp(appInfo, arguments, pid);
-        m_authorizedPids.insert(pid, "xwayland.qtmir");
+        m_authorizedPids.replace(pid, "xwayland.qtmir");
         authorized = true;
         return;
     }
@@ -663,7 +663,7 @@ void ApplicationManager::authorizeSession(const pid_t pid, bool &authorized)
             }
             const QStringList arguments(info->asStringList());
             queuedAddApp(appInfo, arguments, pid);
-            m_authorizedPids.insert(pid, desktopFileHint);
+            m_authorizedPids.replace(pid, desktopFileHint);
         }
 
         authorized = true;
@@ -684,7 +684,7 @@ void ApplicationManager::authorizeSession(const pid_t pid, bool &authorized)
 
             const QStringList arguments(info->asStringList());
             queuedAddApp(appInfo, arguments, pid);
-            m_authorizedPids.insert(pid, "unknown.qtmir");
+            m_authorizedPids.replace(pid, "unknown.qtmir");
             authorized = true;
             return;
         }
@@ -719,14 +719,14 @@ void ApplicationManager::authorizeSession(const pid_t pid, bool &authorized)
         qCDebug(QTMIR_APPLICATIONS) << "Process with pid" << pid << "appeared, attaching to existing entry"
                                     << "in application list with appId:" << application->appId();
         authorized = true;
-        m_authorizedPids.insertMulti(pid, appInfo->appId());
+        m_authorizedPids.insert(pid, appInfo->appId());
         return;
     }
 
     const QStringList arguments(info->asStringList());
     queuedAddApp(appInfo, arguments, pid);
     authorized = true;
-    m_authorizedPids.insertMulti(pid, appInfo->appId());
+    m_authorizedPids.insert(pid, appInfo->appId());
 }
 
 

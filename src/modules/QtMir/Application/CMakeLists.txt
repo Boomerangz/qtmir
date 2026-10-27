@@ -1,115 +1,44 @@
 include(UseLttngGenTp)
 
-add_definitions(-DQPA_MIRSERVER_NAME=\"${QPA_MIRSERVER_NAME}\")
-
-include_directories(
-    ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
-    ${CMAKE_SOURCE_DIR}/src/common
-    ${CMAKE_CURRENT_BINARY_DIR} # for tracepoints.h
+file(GLOB QMLMIRPLUGIN_SRC CONFIGURE_DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/lal/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/lal/*.h
 )
 
-include_directories(
-    SYSTEM
-    ${MIROIL_INCLUDE_DIRS}
-    ${GLIB_INCLUDE_DIRS}
-    ${GIO_INCLUDE_DIRS}
-    ${GIO_UNIX_INCLUDE_DIRS}
-    ${MIRAL_INCLUDE_DIRS}
-    ${MIRSERVER_INCLUDE_DIRS}
-    ${MIRRENDERERGLDEV_INCLUDE_DIRS}
-    ${PROCESS_CPP_INCLUDE_DIRS}
-    ${UBUNTU_PLATFORM_API_INCLUDE_DIRS}
-    ${LOMIRI_APP_LAUNCH_INCLUDE_DIRS}
-    ${GSETTINGS_QT_INCLUDE_DIRS}
-
-    ${LTTNG_INCLUDE_DIRS}
-    ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
-    ${Qt5Qml_PRIVATE_INCLUDE_DIRS}
-    ${Qt5Quick_PRIVATE_INCLUDE_DIRS}
+qt_add_qml_module(qtmirapplicationplugin
+    URI QtMir.Application
+    VERSION 0.1
+    PLUGIN_TARGET qtmirapplicationplugin
+    CLASS_NAME QtMirApplicationPlugin
+    NO_GENERATE_PLUGIN_SOURCE
+    SOURCES ${QMLMIRPLUGIN_SRC}
 )
 
-# We have to remove -pedantic in order to compile tracepoints.c
-string (REPLACE " -pedantic " " " CMAKE_C_FLAGS ${CMAKE_C_FLAGS})
-# Needed to compile tracepoints in C99 mode.
-add_definitions(-DBYTE_ORDER=__BYTE_ORDER)
+add_lttng_tracepoints(qtmirapplicationplugin tracepoints.tp)
 
-# Generate tracepoints.c and .h from tracepoints.tp
-add_lttng_gen_tp(NAME tracepoints)
-add_custom_target(QtMirApplication_LTTNG
-    DEPENDS tracepoints.h tracepoints.c
-)
+target_include_directories(qtmirapplicationplugin PUBLIC ${CMAKE_SOURCE_DIR}/src/modules)
 
-set(QMLMIRPLUGIN_SRC
-    application_manager.cpp
-    application.cpp
-    ../../../common/abstractdbusservicemonitor.cpp
-    ../../../common/debughelpers.cpp
-    dbusfocusinfo.cpp
-    plugin.cpp
-    mirsurface.cpp
-    mirsurfaceinterface.h
-    mirsurfaceitem.cpp
-    mirsurfacelistmodel.cpp
-    mirbuffersgtexture.cpp
-    proc_info.cpp
-    session.cpp
-    sharedwakelock.cpp
-    surfacemanager.cpp
-    taskcontroller.cpp
-    lal/applicationinfo.cpp
-    lal/taskcontroller.cpp
-    timer.cpp
-    timesource.cpp
-    tracepoints.c
-    settings.cpp
-    windowmodel.cpp
-# We need to run moc on these headers
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/ApplicationInfoInterface.h
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/ApplicationManagerInterface.h
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/Mir.h
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/MirSurfaceInterface.h
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/MirSurfaceItemInterface.h
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/MirSurfaceListInterface.h
-    ${CMAKE_SOURCE_DIR}/include/lomiri/shell/application/SurfaceManagerInterface.h
-# Feed the automoc monster
-    session_interface.h
-    applicationinfo.h
-    taskcontroller.h
-    settings_interface.h
-)
-
-add_library(qtmirapplicationplugin SHARED
-    ${QMLMIRPLUGIN_SRC}
-)
-add_dependencies(qtmirapplicationplugin QtMirApplication_LTTNG)
-
-# Frig for files that still rely on mirserver-dev
-string(REPLACE ";" " -I" QTMIR_ADD_MIRSERVER "-I ${MIRSERVER_INCLUDE_DIRS}")
-set_source_files_properties(mirsurface.cpp         PROPERTIES COMPILE_FLAGS "${CMAKE_CXXFLAGS} ${QTMIR_ADD_MIRSERVER}")
-
-target_link_libraries(
-    qtmirapplicationplugin
-
-    ${CMAKE_THREAD_LIBS_INIT}
-
-    ${GLIB_LDFLAGS}
-    ${UBUNTU_PLATFORM_API_LDFLAGS}
-    ${MIRSERVER_LDFLAGS}
-    ${PROCESS_CPP_LDFLAGS}
-    ${LOMIRI_APP_LAUNCH_LDFLAGS}
-    ${LTTNG_LDFLAGS}
-    ${GSETTINGS_QT_LDFLAGS}
-
-    Qt5::Core
-    Qt5::DBus
-    Qt5::Qml
-    Qt5::Quick
-
+target_link_libraries(qtmirapplicationplugin PUBLIC
     qtmirserver
+    PkgConfig::GLIB
+    PkgConfig::GSETTINGS_QT
+    PkgConfig::LOMIRI_APP_LAUNCH
+    PkgConfig::MIRSERVER
+    Qt::Core
+    Qt::DBus
+    Qt::GuiPrivate
+    Qt::Qml
+    Qt::QmlPrivate
+    Qt::Quick
+    Qt::QuickPrivate
 )
 
+if(NOT WITH_MIR2)
+    target_link_libraries(qtmirapplicationplugin PRIVATE PkgConfig::MIRRENDERERGLDEV)
+endif()
 
-# install
-add_qml_plugin(QtMir.Application 0.1 QtMir/Application TARGETS qtmirapplicationplugin)
+install(TARGETS qtmirapplicationplugin DESTINATION ${QML_MODULE_INSTALL_DIR}/QtMir/Application)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/qmldir DESTINATION ${QML_MODULE_INSTALL_DIR}/QtMir/Application)
 install(FILES com.canonical.qtmir.gschema.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/glib-2.0/schemas)

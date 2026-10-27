@@ -1,21 +1,5 @@
 set(DEMO_SHELL qtmir-demo-shell)
 
-add_definitions(-DQPA_MIRSERVER_NAME=\"${QPA_MIRSERVER_NAME}\")
-
-include_directories(
-    SYSTEM
-
-    ${CMAKE_SOURCE_DIR}/include
-
-    ${MIRSERVER_INCLUDE_DIRS}
-    ${MIROIL_INCLUDE_DIRS}
-    ${MIRAL_INCLUDE_DIRS}
-
-    ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
-    ${Qt5Qml_PRIVATE_INCLUDE_DIRS}
-    ${Qt5Quick_PRIVATE_INCLUDE_DIRS}
-)
-
 add_executable(${DEMO_SHELL}
     pointerposition.cpp
     screenwindow.cpp
@@ -23,28 +7,25 @@ add_executable(${DEMO_SHELL}
     main.cpp
 )
 
-target_link_libraries(
-    ${DEMO_SHELL}
+target_include_directories(${DEMO_SHELL} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
+target_link_libraries(${DEMO_SHELL} PRIVATE
     qtmirserver
-
-    Qt5::Core
-    Qt5::DBus
-    Qt5::Qml
-    Qt5::Quick
+    Qt::Core
+    Qt::DBus
+    Qt::Qml
+    Qt::Quick
 )
 
 file(GLOB QML_JS_FILES *.qml *.js *.png)
 
-add_custom_target(${DEMO_SHELL}-qmlfiles
-                  SOURCES ${QML_JS_FILES})
+add_custom_target(${DEMO_SHELL}-qmlfiles SOURCES ${QML_JS_FILES})
 
 # install binaries
 install(TARGETS ${DEMO_SHELL}
-     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
- )
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
 
-install(FILES
-    ${QML_JS_FILES}
+install(FILES ${QML_JS_FILES}
     DESTINATION ${QTMIR_DATA_DIR}/${DEMO_SHELL}
 )

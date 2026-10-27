@@ -1,34 +1,12 @@
-set(
-  SCREEN_TEST_SOURCES
-  screen_test.cpp
-  ${CMAKE_SOURCE_DIR}/src/common/debughelpers.cpp
+add_executable(ScreenTest screen_test.cpp)
+
+target_include_directories(ScreenTest PRIVATE ${CMAKE_SOURCE_DIR}/tests/framework)
+
+target_link_libraries(ScreenTest PRIVATE
+    qtmirserver
+    Qt::GuiPrivate
+    Qt::Sensors
+    GTest::gmock_main
 )
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/include
-  ${CMAKE_SOURCE_DIR}/tests/framework
-  ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
-  ${CMAKE_SOURCE_DIR}/src/common
-)
-
-include_directories(
-  SYSTEM
-  ${MIROIL_INCLUDE_DIRS}
-  ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
-  ${MIRSERVER_INCLUDE_DIRS}
-  ${MIRAL_INCLUDE_DIRS}
-)
-
-add_executable(ScreenTest ${SCREEN_TEST_SOURCES})
-
-target_link_libraries(
-  ScreenTest
-  qtmirserver
-
-  ${GTEST_BOTH_LIBRARIES}
-  ${GMOCK_LIBRARIES}
-
-  Qt5::Sensors
-)
-
-add_test(Screen, ScreenTest)
+add_test(NAME Screen COMMAND ScreenTest)

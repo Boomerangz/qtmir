@@ -1,41 +1,32 @@
 set(DEMO_CLIENT qtmir-demo-client)
 configure_file(${DEMO_CLIENT}.desktop.in ${CMAKE_CURRENT_BINARY_DIR}/${DEMO_CLIENT}.desktop @ONLY)
 
-include_directories(
-    SYSTEM
-    ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
-    ${Qt5Qml_PRIVATE_INCLUDE_DIRS}
-    ${Qt5Quick_PRIVATE_INCLUDE_DIRS}
-)
-
 add_executable(${DEMO_CLIENT}
     main.cpp
 )
 
-target_link_libraries(
-    ${DEMO_CLIENT}
-    Qt5::Core
-    Qt5::DBus
-    Qt5::Qml
-    Qt5::Quick
+target_include_directories(${DEMO_CLIENT} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+
+target_link_libraries(${DEMO_CLIENT} PRIVATE
+    Qt::Core
+    Qt::DBus
+    Qt::Qml
+    Qt::Quick
 )
 
 file(GLOB QML_JS_FILES *.qml *.js *.png)
 
-add_custom_target(${DEMO_CLIENT}-qmlfiles
-                  SOURCES ${QML_JS_FILES})
+add_custom_target(${DEMO_CLIENT}-qmlfiles SOURCES ${QML_JS_FILES})
 
 # install binaries
 install(TARGETS ${DEMO_CLIENT}
-     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
- )
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
 
-install(FILES
-    ${QML_JS_FILES}
+install(FILES ${QML_JS_FILES}
     DESTINATION ${QTMIR_DATA_DIR}/${DEMO_CLIENT}
 )
 
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/${DEMO_CLIENT}.desktop
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${DEMO_CLIENT}.desktop
     DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications
 )

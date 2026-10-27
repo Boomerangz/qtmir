@@ -50,7 +50,7 @@ inline QString qpaPluginDirectory() {
     if (isRunningInstalled()) {
         return QString("@QPA_PLUGIN_INSTALL_DIR@/");
     } else {
-        return QString("@CMAKE_BINARY_DIR@/src/platforms/mirserver/");
+        return QString("@CMAKE_BINARY_DIR@/src/platforms/mirserver/qpa/");
     }
 }
 

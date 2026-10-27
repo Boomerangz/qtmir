@@ -1,15 +1,6 @@
 #!/usr/bin/make -f
-# -*- makefile -*-
 
-export DPKG_GENSYMBOLS_CHECK_LEVEL=4
-
-include /usr/share/dpkg/default.mk
-
-include /usr/share/dpkg/buildflags.mk
-# see FEATURE AREAS in dpkg-buildflags(1)
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
-
-DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
 
 %:
 	dh $@
@@ -17,20 +8,13 @@ DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
 override_dh_missing:
 	dh_missing --fail-missing --sourcedir=debian/tmp-mir2-qt5
 
-FLAGS := -DWITH_CONTENTHUB=ON -DWerror=ON
-# Explicitly disable building with Valgrind on architectures without it.
-valgrind_architectures := amd64 arm64 armhf i386 mips64el mipsel ppc64el s390x powerpc ppc64 x32
-ifeq ($(filter $(DEB_HOST_ARCH), $(valgrind_architectures)),)
-	FLAGS += -DWITH_VALGRIND=OFF
-endif
-
 override_dh_gencontrol:
 	dh_gencontrol -- -VLomiriShellAppApiVersion=\
 	$(shell pkg-config --modversion debian/tmp-mir2-qt5/usr/share/pkgconfig/lomiri-shell-application.pc)
 
 override_dh_auto_configure:
-	dh_auto_configure --builddirectory=build-mir1-qt5 -- $(FLAGS)
-	dh_auto_configure --builddirectory=build-mir2-qt5 -- $(FLAGS) -DWITH_MIR2=ON
+	dh_auto_configure --builddirectory=build-mir1-qt5 -- -DWITH_CONTENTHUB=ON
+	dh_auto_configure --builddirectory=build-mir2-qt5 -- -DWITH_CONTENTHUB=ON -DWITH_MIR2=ON
 
 override_dh_auto_build:
 	dh_auto_build --builddirectory=build-mir1-qt5
@@ -50,9 +34,6 @@ override_dh_auto_clean:
 	rm -rf debian/tmp-mir1-qt5 debian/tmp-mir2-qt5
 
 override_dh_install:
-	#clean gmock/gtest if it built in our build dir
-	-rm -f debian/tmp-mir*/usr/lib/libgmock*.a debian/tmp-mir*/usr/lib/libgtest*.a
-	-rm -rf debian/tmp-mir*/usr/include/gmock debian/tmp-mir*/usr/include/gtest
 	dh_install --sourcedir=debian/tmp-mir1-qt5 \
 		-pqtmir-qt5-mir1 \
 		-plibqt5mir1server1 \

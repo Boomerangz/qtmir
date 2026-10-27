@@ -18,9 +18,6 @@
 #define MOCK_TASK_CONTROLLER_H
 
 #include <QtMir/Application/taskcontroller.h>
-#include <QMap>
-
-#include <core/posix/fork.h>
 
 #include <gmock/gmock.h>
 
@@ -39,20 +36,7 @@ struct MockTaskController : public qtmir::TaskController
     MOCK_METHOD1(suspend, bool(const QString&));
     MOCK_METHOD1(resume, bool(const QString&));
 
-    bool doAppIdHasProcessId(const QString& appId, pid_t pid);
-
     QSharedPointer<qtmir::ApplicationInfo> doGetInfoForApp(const QString& appId) const;
-
-    bool doStop(const QString& appId);
-
-    bool doStart(const QString& appId, const QStringList& args);
-
-    bool doSuspend(const QString& appId);
-
-    bool doResume(const QString& appId);
-
-private:
-    QMap<QString, core::posix::ChildProcess> children;
 };
 
 } // namespace qtmir

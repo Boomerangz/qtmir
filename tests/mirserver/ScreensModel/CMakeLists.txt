@@ -1,39 +1,16 @@
-set(
-  SCREENCONTROLLER_TEST_SOURCES
-  screensmodel_test.cpp
-  ${CMAKE_SOURCE_DIR}/src/common/debughelpers.cpp
-  # to be moc-ed
-  stub_screen.h
-  testable_screensmodel.h
+add_executable(ScreensModelTest
+    screensmodel_test.cpp
+    stub_screen.h
+    testable_screensmodel.h
 )
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/include
-  ${CMAKE_SOURCE_DIR}/tests/framework
-  ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
-  ${CMAKE_SOURCE_DIR}/src/common
+target_link_libraries(ScreensModelTest PRIVATE
+    qtmirserver
+    qtmir-test-framework-static
+    PkgConfig::MIRRENDERERGLDEV
+    PkgConfig::MIRTEST
+    Qt::GuiPrivate
+    GTest::gmock_main
 )
 
-include_directories(
-  SYSTEM
-  ${MIROIL_INCLUDE_DIRS}
-  ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
-  ${MIRSERVER_INCLUDE_DIRS}
-  ${MIRRENDERERGLDEV_INCLUDE_DIRS}
-  ${MIRTEST_INCLUDE_DIRS}
-)
-
-add_executable(ScreensModelTest ${SCREENCONTROLLER_TEST_SOURCES})
-
-target_link_libraries(
-  ScreensModelTest
-  qtmirserver
-
-  -L${CMAKE_BINARY_DIR}/tests/framework
-  qtmir-test-framework-static
-
-  ${GTEST_BOTH_LIBRARIES}
-  ${GMOCK_LIBRARIES}
-)
-
-add_test(ScreensModel, ScreensModelTest)
+add_test(NAME ScreensModel COMMAND ScreensModelTest)

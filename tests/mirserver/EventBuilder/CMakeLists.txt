@@ -1,27 +1,8 @@
-set(
-  EVENT_BUILDER_TEST_SOURCES
-  eventbuilder_test.cpp
+add_executable(EventBuilderTest eventbuilder_test.cpp)
+
+target_link_libraries(EventBuilderTest PRIVATE
+    qtmirserver
+    GTest::gmock_main
 )
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/src/platforms/mirserver
-  ${CMAKE_SOURCE_DIR}/src/common
-)
-
-include_directories(
-  SYSTEM
-  ${MIROIL_INCLUDE_DIRS}
-  ${MIRSERVER_INCLUDE_DIRS}
-  ${MIRAL_INCLUDE_DIRS}
-)
-
-add_executable(EventBuilderTest ${EVENT_BUILDER_TEST_SOURCES})
-
-target_link_libraries(
-  EventBuilderTest
-  qtmirserver
-  ${GTEST_BOTH_LIBRARIES}
-  ${GMOCK_LIBRARIES}
-)
-
-add_test(EventBuilder, EventBuilderTest)
+add_test(NAME EventBuilder COMMAND EventBuilderTest)
