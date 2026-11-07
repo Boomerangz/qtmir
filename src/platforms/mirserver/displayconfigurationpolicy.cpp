@@ -22,6 +22,8 @@
 #include <mir/geometry/point.h>
 #include <mir/graphics/display_configuration.h>
 
+#include <deviceinfo.h>
+
 #include <qglobal.h>
 #include <QByteArray>
 
@@ -52,6 +54,12 @@ struct DisplayConfigurationPolicy::Private
         float gridUnit = DEFAULT_GRID_UNIT_PX;
         if (qEnvironmentVariableIsSet(ENV_GRID_UNIT_PX)) {
             gridUnit = getenvFloat(ENV_GRID_UNIT_PX, DEFAULT_GRID_UNIT_PX);
+        } else {
+            // Clients get the scale from Mir and should not see GRID_UNIT_PX,
+            // so take the device's grid unit from deviceinfo.
+            DeviceInfo info;
+            if (info.gridUnit() > 0)
+                gridUnit = info.gridUnit();
         }
         m_defaultScale = gridUnit / DEFAULT_GRID_UNIT_PX;
     }
@@ -96,9 +104,6 @@ void DisplayConfigurationPolicy::apply_to(mg::DisplayConfiguration& conf)
                 return;
             }
 
-            output.top_left = mir::geometry::Point{nextTopLeftPosition, 0};
-            nextTopLeftPosition += output.modes[output.current_mode_index].size.width.as_int();
-
             if (phoneDetected) {
                 if (screenCount == 1 || output.type == mg::DisplayConfigurationOutputType::lvds || output.type == mg::DisplayConfigurationOutputType::dsi) {
                     output.form_factor = mir_form_factor_phone;
@@ -111,6 +116,10 @@ void DisplayConfigurationPolicy::apply_to(mg::DisplayConfiguration& conf)
                 output.form_factor = mir_form_factor_monitor;
                 output.scale = d->m_defaultScale; // probably 1 on desktop anyway.
             }
+
+            // Lay outputs out in logical pixels, so a scaled panel leaves no gap.
+            output.top_left = mir::geometry::Point{nextTopLeftPosition, 0};
+            nextTopLeftPosition += output.extents().size.width.as_int();
         });
 }
 
