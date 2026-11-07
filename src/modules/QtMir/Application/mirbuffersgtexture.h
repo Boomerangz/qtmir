@@ -66,6 +66,8 @@ public:
 
     void bind() override;
 
+    void setTextureSize(const QSize& size);
+
 private:
 #if MIR_SERVER_VERSION < MIR_VERSION_NUMBER(2, 20, 0)
     std::shared_ptr<MirGlBuffer> m_mirBuffer;
@@ -73,6 +75,7 @@ private:
     std::shared_ptr<mir::graphics::Buffer> m_mirBuffer;
     std::shared_ptr<mir::graphics::gl::Texture> m_mirTexture;
 #endif
+    QSize m_textureSize;
 };
 
 #endif // MIRBUFFERSGTEXTURE_H
