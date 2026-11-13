@@ -388,6 +388,13 @@ Mir::Type MirSurface::type() const
     }
 }
 
+namespace {
+QSize sizeOf(mir::geometry::Rectangle const& rect)
+{
+    return QSize{rect.size.width.as_int(), rect.size.height.as_int()};
+}
+}
+
 #if MIR_SERVER_VERSION < MIR_VERSION_NUMBER(2, 20, 0)
 void MirSurface::dropPendingBuffer()
 {
@@ -423,6 +430,7 @@ void MirSurface::dropPendingBuffer()
             // free the current before acquiring the next
             texture->freeBuffer();
             texture->setBuffer(renderables[i]->buffer());
+            texture->setTextureSize(sizeOf(renderables[i]->screen_position()));
         }
 
         framesPending = m_surface->buffers_ready_for_compositor((void*)userId);
@@ -535,6 +543,8 @@ bool MirSurface::updateTextureLocked(qintptr userId, OutputTextures &output)
 #else
             texture->setBuffer(renderables[i]->buffer(), m_glProvider);
 #endif
+            // Mir scales the buffer to this extent; use it, not the raw buffer size.
+            texture->setTextureSize(sizeOf(renderables[i]->screen_position()));
             slot.extent = extentOf(renderables[i]->screen_position());
 
             if (i == 0) {

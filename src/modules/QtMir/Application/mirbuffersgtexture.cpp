@@ -289,7 +289,14 @@ int MirBufferSGTexture::textureId() const
 
 QSize MirBufferSGTexture::textureSize() const
 {
+    if (m_textureSize.width() >= 0 && m_textureSize.height() >= 0)
+        return m_textureSize;
     return m_mirBuffer->textureSize();
+}
+
+void MirBufferSGTexture::setTextureSize(const QSize& size)
+{
+    m_textureSize = size;
 }
 
 bool MirBufferSGTexture::hasAlphaChannel() const
@@ -332,6 +339,7 @@ void MirBufferSGTexture::bind()
 
 MirBufferSGTexture::MirBufferSGTexture()
     : QSGTexture()
+    , m_textureSize(-1, -1)
 {
     setFiltering(QSGTexture::Linear);
     setHorizontalWrapMode(QSGTexture::ClampToEdge);
@@ -371,8 +379,16 @@ int MirBufferSGTexture::textureId() const
 
 QSize MirBufferSGTexture::textureSize() const
 {
+    if (m_textureSize.width() >= 0 && m_textureSize.height() >= 0)
+        return m_textureSize;
+
     auto const size = m_mirBuffer->size();
     return QSize{size.width.as_value(), size.height.as_value()};
+}
+
+void MirBufferSGTexture::setTextureSize(const QSize& size)
+{
+    m_textureSize = size;
 }
 
 bool MirBufferSGTexture::hasAlphaChannel() const

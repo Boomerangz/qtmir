@@ -45,6 +45,7 @@ target_link_libraries(qtmirserver
         PkgConfig::URL_DISPATCHER
         PkgConfig::WAYLAND_SERVER
         PkgConfig::XKBCOMMON
+        PkgConfig::DEVICEINFO
         Qt::DBus
         Qt::GuiPrivate
         Qt::Quick

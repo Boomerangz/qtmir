@@ -46,6 +46,7 @@ endif()
 
 pkg_check_modules(WAYLAND_SERVER REQUIRED IMPORTED_TARGET wayland-server)
 pkg_check_modules(XKBCOMMON REQUIRED IMPORTED_TARGET xkbcommon)
+pkg_check_modules(DEVICEINFO REQUIRED IMPORTED_TARGET deviceinfo)
 pkg_check_modules(GLIB REQUIRED IMPORTED_TARGET glib-2.0)
 pkg_check_modules(LOMIRI_APP_LAUNCH REQUIRED IMPORTED_TARGET lomiri-app-launch-0)
 pkg_check_modules(URL_DISPATCHER REQUIRED IMPORTED_TARGET lomiri-url-dispatcher)
