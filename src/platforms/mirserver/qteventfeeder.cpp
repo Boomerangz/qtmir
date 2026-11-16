@@ -25,6 +25,7 @@
 #include <qpa/qplatformintegration.h>
 #include <qpa/qwindowsysteminterface_p.h>
 #include <QGuiApplication>
+#include <QScreen>
 #include <QTextCodec>
 #include <QDebug>
 
@@ -654,14 +655,22 @@ void QtEventFeeder::dispatchTouch(const MirTouchEvent *tev)
     // FIXME(loicm) Max pressure is device specific. That one is for the Samsung Galaxy Nexus. That
     //     needs to be fixed as soon as the compat input lib adds query support.
     const float kMaxPressure = 1.28;
+
+    // Mir maps touchscreen coordinates to the output in physical pixels, while
+    // the shell window is laid out in logical (scaled) pixels.
+    qreal kScale = 1.0;
+    if (QScreen *primary = QGuiApplication::primaryScreen()) {
+        if (primary->devicePixelRatio() > 0)
+            kScale = primary->devicePixelRatio();
+    }
     const int kPointerCount = mir_touch_event_point_count(tev);
     QList<QWindowSystemInterface::TouchPoint> touchPoints;
     QWindow *window = nullptr;
 
     if (kPointerCount > 0) {
         window = mQtWindowSystem->getWindowForPoint(
-                    QPoint(mir_touch_event_axis_value(tev, 0, mir_touch_axis_x),
-                           mir_touch_event_axis_value(tev, 0, mir_touch_axis_y)));
+                    QPoint(mir_touch_event_axis_value(tev, 0, mir_touch_axis_x) / kScale,
+                           mir_touch_event_axis_value(tev, 0, mir_touch_axis_y) / kScale));
 
         if (!window) {
             qCDebug(QTMIR_MIR_INPUT) << "REJECTING INPUT EVENT, no matching window";
@@ -675,10 +684,10 @@ void QtEventFeeder::dispatchTouch(const MirTouchEvent *tev)
         for (int i = 0; i < kPointerCount; ++i) {
             QWindowSystemInterface::TouchPoint touchPoint;
 
-            const float kX = mir_touch_event_axis_value(tev, i, mir_touch_axis_x);
-            const float kY = mir_touch_event_axis_value(tev, i, mir_touch_axis_y);
-            const float kW = mir_touch_event_axis_value(tev, i, mir_touch_axis_touch_major);
-            const float kH = mir_touch_event_axis_value(tev, i, mir_touch_axis_touch_minor);
+            const float kX = mir_touch_event_axis_value(tev, i, mir_touch_axis_x) / kScale;
+            const float kY = mir_touch_event_axis_value(tev, i, mir_touch_axis_y) / kScale;
+            const float kW = mir_touch_event_axis_value(tev, i, mir_touch_axis_touch_major) / kScale;
+            const float kH = mir_touch_event_axis_value(tev, i, mir_touch_axis_touch_minor) / kScale;
             const float kP = mir_touch_event_axis_value(tev, i, mir_touch_axis_pressure);
             touchPoint.id = mir_touch_event_id(tev, i);
 
